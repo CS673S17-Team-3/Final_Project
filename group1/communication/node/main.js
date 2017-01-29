@@ -1,5 +1,6 @@
 // Express and SocketIO boilerplate
 var app = require('express')();
+var morgan = require('morgan')
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Client = require('node-rest-client').Client;
@@ -10,11 +11,13 @@ var multer = require('multer');
 var fs = require('fs');
 var crypto = require('crypto');
 
+app.use(morgan('combined'))
+
 // Add CORS headers to all express requests
 app.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
 });
 
 // just for file upload
@@ -83,12 +86,14 @@ namespaces = {}
 function add_new_namespace(room) {
   namespaces[room.id] = io.of(util.format('/%s', room.id))
     .on('connection', function(socket) {
+        console.log(util.format('conncted to room %s', room.id ));
        socket.on('msg',function(msg){
+           console.log(util.format('message from %s: %s', msg.username, msg.value));
          namespaces[room.id].emit('msg', msg);
          messages.save(room.id, util.format('%s: %s', msg.username, msg.value), msg.user_id);
        });
        socket.on('disconnect',function(){
-         // console.log(util.format('someone disconnected from %s', room.id ));
+         console.log(util.format('someone disconnected from %s', room.id ));
        });
   });
 }
