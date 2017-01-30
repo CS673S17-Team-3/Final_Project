@@ -1,82 +1,87 @@
-# Final_Project
+# Final Project, MET CS 673
 
-###### note: locally, you must install nodejs and run main.js in /communication/node/main.js for the communication application to work; also adjust the 2 absolute paths in the main.js file to match the directory structure
+Last modified Spring 2017.
 
-### LOCAL INSTALLATION (windows systems)
-###### to use linux style commands of this README please install git bash (http://www.geekgumbo.com/2010/04/09/installing-git-on-windows/)
-##### create a directory in your drive C:
-##### 
-mkdir /c/g1
-##### 
-mkdir /c/g1/database
-##### 
-mkdir /c/g1/source
-##### 
-mdkir /c/g1/virtualenv
-##### 
-mkdir /c/g1/static
+These instructions may be followed on any Unix-like system, including OS X.
 
-##### clone project into source folder
-git clone https://github.com/CS673S15-Group1/Final_Project /c/g1/source
+## Getting started
 
-##### create a virtual environment
-###### note: must have installed python 2.7 to the default directory in C:\Python27
-###### note: must have virtual env installed 'pip install virtualenv' -- must have pip installed, usually included on windows system installs
-virtualenv -p /c/Python27/python.exe /c/g1/virtualenv
+First, clone this repos and checkout the `develop` branch:
 
-##### change directory to the project source
-cd /c/g1/source/group1
+```
+$ git clone https://github.com/CS673S17-Team-2/Final_Project.git
+$ cd Final_Project
+$ git checkout develop
+```
 
-##### install dependencies 
-###### note: windependencies file for windows since readline is not compatible, may have to change all 'import readline' to 'import pyreadline as readline'
-../../virtualenv/Scripts/pip.exe install -r ../windependencies.txt
+Create a Python virtualenv in a `venv` directory and activate it:
 
-##### make the migration files
-../../virtualenv/Scripts/python.exe manage.py makemigrations
+```
+$ virtualenv venv
+$ source venv/bin/activate
+```
 
-##### run the database migration
-../../virtualenv/Scripts/python.exe manage.py migrate
+Install the Python requirements using `pip`:
 
-##### run server, navigate to http://localhost:8000 in a browser
-../../virtualenv/Scripts/python.exe manage.py runserver
+```
+$ pip install -r requirements.txt
+```
+
+Create the database:
+
+```
+$ mkdir database
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
+
+Create an admin user for use with Django and the project management
+applications, e.g. username: `admin`, password `admin`.
+
+```
+$ python manage.py createsuperuser
+```
+
+Now start the server:
+
+```
+$ python manage.py runserver
+```
+
+You should see a message telling you the server is running at
+`http://127.0.0.1:8000/`. Open this URL in a browser. This is the Django backend
+for the project management application. It handles both the browser-based
+interface and the RESTful RPC backend used by the chat application.
+
+If you'd like to use the chat application, you'll need to create a default chat
+channel and start the Node service to handle passing websocket messages between
+the browser interface and the Django backend. 
+
+To create a channel without starting the web interface, use `curl`:
+
+```
+$ curl -H "Content-Type: application/json" -X POST -d '{"name":"Test","description":"Test team","public":true}' http://localhost:8000/api/rooms/
+```
+
+Prepare the Node server by making sure all your node modules are up-to-date:
+
+```
+$ cd Final_Project/group1/communication/node
+$ npm install
+```
+
+Then you can start the Node server:
+
+```
+$ node main.js
+```
+
+You should now be able to open the [chat application on your location
+server](http://127.0.0.1:8000/communication/) in your browser and log in to use
+chat.
 
 
-### LOCAL INSTALLATION (*nix systems [Mac, Ubuntu...])
-##### create a directory in your home directory
-##### 
-mkdir ~/g1
-##### 
-mkdir ~/g1/database
-##### 
-mkdir ~/g1/source
-##### 
-mkdir ~/g1/virtualenv
-##### 
-mkdir ~/g1/static
-##### clone project into source folder
-git clone https://github.com/CS673S15-Group1/Final_Project ~/g1/source
-
-##### create a virtual environment
-###### note: must have installed python 2.7 to the default directory in /usr/local/bin with a python2.7 executable via altinstall
-###### note: must have virtual env installed 'pip install virtualenv' -- must have pip installed, usually included on windows system installs
-###### note: see server installation script under deploy_tools for details on installing a new python
-virtualenv -p /usr/local/bin/python2.7 ~/g1/virtualenv
-
-##### change directory to the project source
-cd ~/g1/source/group1
-
-##### install dependencies
-../../virtualenv/bin/pip install -r ../dependencies.txt
-
-##### make the migration files
-../../virtualenv/bin/python manage.py makemigrations
-
-##### run the database migration
-../../virtualenv/bin/python manage.py migrate
-
-##### run server, navigate to http://localhost:8000 in a browser
-../../virtualenv/bin/python manage.py runserver
-
+# Previous documentation
 
 ### SERVER INSTALLATION (*nix systems)
 ###### note: follow the commands under deploy_tools serverInstallcommands.sh (not tested as an executable shell script)
