@@ -49,7 +49,7 @@ var users = [];
 var global_namespace = io.of('/');
 global_namespace.on('connection', function(socket){
 	var user;
-	socket.on('user', function(msg) { 
+	socket.on('user', function(msg) {
 		console.log(msg);
 		user = msg.username;
 		users.push(user);
@@ -76,7 +76,7 @@ app.get('/users', function(req,res){
 	res.send(_.unique(users));
 });
 
-var room_url = 'http://localhost/api/rooms/?format=json';
+var room_url = 'http://127.0.0.1:8000/api/rooms/?format=json';
 
 namespaces = {}
 
@@ -104,25 +104,25 @@ var messages = {
 		message_template = {
 			data: {
 				'at_message': false,
-				'room': util.format('http://localhost/api/rooms/%s/', room_id),
-				'user': util.format('http://localhost/api/users/%s/', user_id),
-				'text': message 
+				'room': util.format('http://127.0.0.1:8000/api/rooms/%s/', room_id),
+				'user': util.format('http://127.0.0.1:8000/api/users/%s/', user_id),
+				'text': message
 			},
 			headers: { 'Content-Type': 'application/json' }
 		};
-		client.post('http://localhost/api/messages/', message_template, function(data,response) {
+		client.post('http://127.0.0.1:8000/api/messages/', message_template, function(data,response) {
 			console.log( util.format('(%s) Room %s : "%s"', response.statusCode, room_id, message) );
 		});
 	}
 }
 
-var msg_endpoint = 'http://localhost:8000/api/messages/'
+var msg_endpoint = 'http://127.0.0.1:8000/api/messages/'
 
 var message_template = {
 	"data": {
 		"at_message": false,
-		"room": "http://192.168.1.146:8000/api/rooms/1/",
-	"user": "http://192.168.1.146:8000/api/users/1/"
+		"room": "http://127.0.0.1:8000/api/rooms/1/",
+	"user": "http://127.0.0.1:8000/api/users/1/"
 	},
 	"headers": { "Content-Type": "application/json" }
 }
