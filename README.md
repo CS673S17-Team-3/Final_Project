@@ -6,12 +6,18 @@ These instructions may be followed on any Unix-like system, including OS X.
 
 ## Getting started
 
-First, clone this repos and checkout the `develop` branch:
+First, clone this repo and checkout your Team's respective `master` branch:
 
 ```
+For Team 2:
 $ git clone https://github.com/CS673S17-Team-2/Final_Project.git
-$ cd Final_Project
 $ git checkout develop
+
+For Team 3:
+$ git clone https://github.com/CS673S17-Team-3/Final_Project.git
+$ git checkout master
+
+$ cd Final_Project
 ```
 
 Create a Python virtualenv in a `venv` directory and activate it:
@@ -19,6 +25,11 @@ Create a Python virtualenv in a `venv` directory and activate it:
 ```
 $ virtualenv venv
 $ source venv/bin/activate
+```
+
+You will know when your virtualenv is 'active' when your terminal looks something like this:
+```
+(venv) $ <----terminal prompt contains the name of your virtualenv in paranthesis
 ```
 
 Install the Python requirements using `pip`:
@@ -55,7 +66,7 @@ interface and the RESTful RPC backend used by the chat application.
 
 If you'd like to use the chat application, you'll need to create a default chat
 channel and start the Node service to handle passing websocket messages between
-the browser interface and the Django backend. 
+the browser interface and the Django backend.
 
 To create a channel without starting the web interface, use `curl`:
 

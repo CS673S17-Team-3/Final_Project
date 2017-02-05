@@ -12,3 +12,5 @@ group1/communication/django/comm/migrations/*
 group1/comm/migrations/*
 .DS_Store
 venv/
+group1/communication/node/node_modules/*
+*.orig
