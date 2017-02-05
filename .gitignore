@@ -10,3 +10,5 @@ group1/requirements/migrations/*
 group1/issue_tracker/migrations/*
 group1/communication/django/comm/migrations/*
 group1/comm/migrations/*
+.DS_Store
+venv/

@@ -77,10 +77,10 @@ function search_show(){
 global_room_list = [];
 global_user_list = [];
 
-var host_name = window.location.hostname; // looks like '127.0.0.1'
-var server_host = window.location.host // looks like '127.0.0.1:8000'
-var base_url = 'http://' + host_name + ':3000/';
-var global = io('http://' + host_name + ':3000');
+var server_host = window.location.hostname;
+var server_port = window.location.port;
+var base_url = 'http://' + server_host + ':3000/';
+var global = io('http://' + server_host + ':3000');
 
 global.emit('user', {
   'username': user,
@@ -102,7 +102,7 @@ function createTeamFunc() {
 
     $.ajax({
         type: 'POST',
-        url: 'http://' + server_host + '/api/rooms/',
+        url: 'http://' + server_host + ':' + server_port + '/api/rooms/',
         beforeSend: function (request) {
             request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
         },
@@ -128,7 +128,7 @@ global.on('user', function(user){
 });
 
 sockets = {};
-$.getJSON('http://' + server_host + '/api/rooms/',function(data){
+$.getJSON('http://' + server_host + ':' + server_port + '/api/rooms/',function(data){
   data.forEach(function(room){
     add_socket(room);
   });
@@ -233,7 +233,7 @@ function switch_room(target_room){
 
 function get_message_data(room_id) {
 
-    var message_endpoint = 'http://' + server_host + '/api/messages/?format=json';
+    var message_endpoint = 'http://' + server_host + ':' + server_port + '/api/messages/?format=json';
     $.getJSON(message_endpoint, function(data){
       data.forEach(function(msg){
         message_room = Number(msg.room.split('/api/rooms/')[1].slice(0,-1));
@@ -247,7 +247,7 @@ function get_message_data(room_id) {
 
 function populate_room_list() {
 
-  $.getJSON('http://' + server_host + '/api/rooms/?format=json', function(data) {
+  $.getJSON('http://' + server_host + ':' + server_port + '/api/rooms/?format=json', function(data) { 
     // global_room_list = data;
     data.forEach(function(room) {
       add_new_room(room);
@@ -289,7 +289,7 @@ function add_new_room(room) {
 }
 
 function populate_user_list() {
-  $.getJSON('http://' + server_host + '/api/users/?format=json', function(all_users) {
+  $.getJSON('http://' + server_host + ':' + server_port + '/api/users/?format=json', function(all_users) { 
 
     $.getJSON('http://' + host_name + ':3000/users', function(connected_users){
 
@@ -364,8 +364,8 @@ $(document).ready(function(){
       data: new FormData( this ),
       processData: false,
       contentType: false,
-      success: function(file_path){
-        var download_url = 'http://' + host_name + '/' + file_path;
+      success: function(file_path){ 
+        var download_url = 'http://' + server_host + ':' + server_port + '/' + file_path;
         var display_name = $('input#filename').val();
         $('input#text').val('<a href="' + download_url + '">' + display_name + '</a>' );
         display();
@@ -381,7 +381,7 @@ $(document).ready(function(){
  function get_search_results() {
      $("searchResults").val("");
      var queryString = $("#search_box").val();
-     var message_endpoint = 'http://' + server_host + '/api/messagesearch/?search=' + queryString;
+     var message_endpoint = 'http://' + server_host + ':' + server_port + '/api/messagesearch/?search=' + queryString;
      $.getJSON(message_endpoint, function(data){
        data.forEach(function(msg){
          if (msg.text.indexOf('::') != -1) {
