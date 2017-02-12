@@ -359,7 +359,7 @@ $(document).ready(function(){
 
   $('form#file_upload').submit(function(event){
     $.ajax({
-      url: 'http://' + host_name + ':3000/upload',
+      url: 'http://' + server_host + ':3000/upload',
       type: 'POST',
       data: new FormData( this ),
       processData: false,
