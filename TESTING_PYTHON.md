@@ -44,7 +44,7 @@ Tests should be written near the feature they are testing. Currently, we have te
 * requirements/tests
 
 ## Writing Tests
-In order to write a test for a feature, locate the test suite the represents the "area of concern". For instance, if you are working on the communication tool, you would look for the test suite in **group1/communication/tests**.
+In order to write a test for a feature, locate the test suite that represents the "area of concern". For instance, if you are working on the communication tool, you would look for the test suite in **group1/communication/tests**.
 
 Once you have located the test suite, survey the test file to get a sense for how the tests are organized. Generally, tests within a test suite will be organized within "test classes" that are concerned with a specific area of the code. For instance, in **group1/communication/tests/tests.py**, we see at least 4 (four) different Test Classes:
 * TestInfrastructure -- tests for basic infrastructure
