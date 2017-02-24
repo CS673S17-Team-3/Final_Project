@@ -32,3 +32,13 @@ class UserRoom(models.Model):
 
 	class Meta:
 		unique_together = ('user', 'room')
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+@receiver(post_save, sender=Message)
+def delete_oldest(sender, instance, **kwargs):
+	curroom = instance.room
+	while (Message.objects.filter(room = curroom).count() > 5000):
+		oldest = Message.objects.order_by('time')[:1].get()
+		oldest.delete()
