@@ -247,7 +247,7 @@ function get_message_data(room_id) {
 
 function populate_room_list() {
 
-  $.getJSON('http://' + server_host + ':' + server_port + '/api/rooms/?format=json', function(data) { 
+  $.getJSON('http://' + server_host + ':' + server_port + '/api/rooms/?format=json', function(data) {
     // global_room_list = data;
     data.forEach(function(room) {
       add_new_room(room);
@@ -289,9 +289,9 @@ function add_new_room(room) {
 }
 
 function populate_user_list() {
-  $.getJSON('http://' + server_host + ':' + server_port + '/api/users/?format=json', function(all_users) { 
+  $.getJSON('http://' + server_host + ':' + server_port + '/api/users/?format=json', function(all_users) {
 
-    $.getJSON('http://' + host_name + ':3000/users', function(connected_users){
+    $.getJSON('http://' + server_host + ':3000/users', function(connected_users){
 
       // make sure the current user is included in the list
       connected_users.push(user);
@@ -359,12 +359,12 @@ $(document).ready(function(){
 
   $('form#file_upload').submit(function(event){
     $.ajax({
-      url: 'http://' + host_name + ':3000/upload',
+      url: 'http://' + server_host + ':3000/upload',
       type: 'POST',
       data: new FormData( this ),
       processData: false,
       contentType: false,
-      success: function(file_path){ 
+      success: function(file_path){
         var download_url = 'http://' + server_host + ':' + server_port + '/' + file_path;
         var display_name = $('input#filename').val();
         $('input#text').val('<a href="' + download_url + '">' + display_name + '</a>' );
