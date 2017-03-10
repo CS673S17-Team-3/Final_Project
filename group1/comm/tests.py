@@ -4,7 +4,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 
 # Create your tests here.
-class MaxMessagesTestCase(TestCase):
+class RoomTestCase(TestCase):
     def setUp(self):
     	#Create room and user objects
         Room.objects.create(name = "test1", description = "test1")
