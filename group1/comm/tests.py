@@ -26,5 +26,9 @@ class MaxMessagesTestCase(TestCase):
 
         #Check if each room has 5,000 messages and table has 10,000 overall 
         self.assertEqual(Message.objects.filter(room = room1).count(), 5000)
+        oldest = Message.objects.filter(room = room1).order_by('time')[:1].get()
+        newest = Message.objects.filter(room = room1).order_by('-time')[:1].get()
+        self.assertEqual(oldest.text, '100')
+        self.assertEqual(newest.text, '5099')
         self.assertEqual(Message.objects.filter(room = room2).count(), 5000)
         self.assertEqual(Message.objects.count(), 10000)
