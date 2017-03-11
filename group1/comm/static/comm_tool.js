@@ -73,6 +73,18 @@ function search_show(){
   }
 }
 
+//toggle the invite bar
+function invite_show() {
+  if ($('div#invite_bar').attr('class').indexOf('hidden') == -1) {
+    $('div#invite_bar').addClass('hidden');
+    $('div.messagecontent').css('padding-top', '70px');
+  }
+  else {
+    $('div#invite_bar').removeClass('hidden');
+    $('div.messagecontent').css('padding-top', '130px');
+  }  
+}
+
 // global state variables
 global_room_list = [];
 global_user_list = [];
@@ -88,7 +100,7 @@ global.emit('user', {
 });
 
 global.on('room', function(room) {
-	add_new_room(room);
+  add_new_room(room);
 });
 
 function createTeamFunc() {
@@ -189,7 +201,7 @@ $(document).ready(function(){
             if(e.which == 13) {
                 display();
             }
-	});
+  });
 });
 
 var mobile_nav = {
@@ -242,7 +254,6 @@ function get_message_data(room_id) {
         if (message_room === room_id) { add_message(message_text, room_id) };
       });
     });
-
 }
 
 function populate_room_list() {
@@ -399,6 +410,13 @@ $(document).ready(function(){
      $("#search_box").val("");
  }
 
+function get_invite_results() {
+    $("inviteList").val("");
+    var queryString = $("#invite_box").val();
+
+    alert("Invited " + queryString);
+ }
+
  $("#search_box").keyup(function (e) {
      if (e.which == 13) {
      get_search_results();
@@ -407,6 +425,13 @@ $(document).ready(function(){
  });
 
  $("#search_button_box").click(function () {
+    window.alert("clicked!");
+
    get_search_results();
  });
+
+ $("#invite_button").click(function () {
+   get_invite_results();
+ });
+ 
 });
