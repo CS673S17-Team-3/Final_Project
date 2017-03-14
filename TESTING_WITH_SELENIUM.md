@@ -1,28 +1,38 @@
 SELENIUM_README.md
 
-## create demo-data
+In order to run the Selenium tests, you will need to create some "demo" data to populate your DB.
+
+Create the demo data like so:
+
 ```
 python manage.py populate_demo_data
 ```
 
-install firefox browser
+The Selenium Webdriver is based off the Firefox binary. As a result, you will need to install the Firefox browser.
 
-http://stackoverflow.com/questions/6682009/selenium-firefoxprofile-exception-cant-load-the-profile
+Install the selenium python dependency into your virtualenv:
+```
 pip install -U selenium
+```
 
-http://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path
-download geckodriver from here: https://github.com/mozilla/geckodriver/releases
-    unzip tar.gz
-    move geckodriver binary to ~/g1
-    add path/to/geckodriver/binary to $PATH (export PATH=$PATH:~/g1/)
+Install the geckodriver:
+```
+https://github.com/mozilla/geckodriver/releases
+```
 
+Unzip the geckodriver, and copy it to the root level directory "g1".
 
+Update your $PATH with the geckodriver location:
+```
+export PATH=$PATH:~/g1
+```
 
-make sure both web-app and nodejs are running
+Make sure both web-app and nodejs are running in separate terminal sessions.
+Make sure your third terminal session has an 'activated' virtualenv.
 
-activate virtualenv
-export PATH=$PATH:~/g1/
-
+To run the tests:
+```
 python manage.py test
 or
 python manage.py test /path/to/test
+```
