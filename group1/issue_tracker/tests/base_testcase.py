@@ -17,17 +17,9 @@ class CommonLiveServerTestCase(LiveServerTestCase):
         self.driver = webdriver.Firefox()
         self.user_name = 'username'
         self.user_pw = 'usernamepw'
-        # utils.create_user(first='Jane',
-        #                   last='Doe',
-        #                   username=self.user_name)
         self.super_user_name = 'test'
         self.super_user_pw = 'testpw'
-        # utils.create_super_user(first='Super',
-        #                         last='Woman',
-        #                         username=self.super_user_name)
-        # utils.create_users(users=utils.USERS)
-        # utils.create_projects(number_of_projects=5)
-        # utils.create_issues(number_of_issues=10)
+
 
     def tearDown(self):
         self.driver.quit()
