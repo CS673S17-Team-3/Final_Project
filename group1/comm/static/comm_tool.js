@@ -413,8 +413,16 @@ $(document).ready(function(){
 function get_invite_results() {
     $("inviteList").val("");
     var queryString = $("#invite_box").val();
-
-    alert("Invited " + queryString);
+    alert(server_host + ':' + server_port +'/' +  queryString);
+    $.ajax({
+        // points to the url where your data will be posted
+        url:'http://' + server_host + ':' + server_port + '/communication/sendinviteemail/' + queryString + '/',
+        // post for security reason
+        type: "GET",
+        // what to do when the call is success 
+        success:function(response){},
+        fail:function(){}
+    });
  }
 
  $("#search_box").keyup(function (e) {
@@ -430,7 +438,8 @@ function get_invite_results() {
    get_search_results();
  });
 
- $("#invite_button").click(function () {
+ $("#invite_button").on('click', function () {
+    console.log("form submitted");
    get_invite_results();
  });
  

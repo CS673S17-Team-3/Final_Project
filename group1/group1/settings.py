@@ -28,6 +28,13 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+#email host parameters
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'testcs673s17@gmail.com'
+EMAIL_HOST_PASSWORD = '123456abcd'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 # Application definition
 
 INSTALLED_APPS = (

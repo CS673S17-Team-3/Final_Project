@@ -5,6 +5,7 @@ from comm.models import User, Room, Message, UserRoom
 from rest_framework import viewsets, generics, filters
 from comm.serializers import UserSerializer, RoomSerializer, MessageSerializer, MessageDataSerializer, UserRoomSerializer, UserRoomDataSerializer
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 import random
 
 # Return the main chat room
@@ -12,6 +13,20 @@ import random
 def index(request):
 	context = {'user': request.user}
 	return render(request, 'comm/index.html', context)
+
+#a test view
+#@login_required(login_url='/signin')
+#def test(request):
+#	context = {'user': request.user}
+#	return render(request, 'com/index.html', context)
+
+#send invite email
+@login_required(login_url='/signin')
+def sendInviteEmail(request, emailTo):
+	res = send_mail("Invite to join room", "hello, you are invited to join the room : ", "testcs673s17@gmail.com", [emailTo])
+	return HttpResponse('%s'%res)
+
+
 
 ## Django REST framework classes...
 class UserViewSet(viewsets.ModelViewSet):

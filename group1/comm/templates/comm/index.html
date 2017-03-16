@@ -185,10 +185,12 @@
       <div id="invite_bar" class="input-group hidden">
         <input id="invite_box" type="text" class="form-control" placeholder="Enter emails: ..">
         <span class="input-group-btn">
-          <button id="invite_button" class="btn btn-default" type="button">"Invite"
-            <!-- <span class="glyphicon glyphicon-search" aria-hidden="true">
-            </span> -->
-          </button>
+          <form action="" method="post">{% csrf_token %}
+            <button id="invite_button" class="btn btn-default" type="submit"> Invite
+              <!-- <span class="glyphicon glyphicon-search" aria-hidden="true">
+             </span> -->
+           </button>
+          </form>
         </span>
       </div>
 
