@@ -59,7 +59,7 @@ class TestLoginFail(unittest.TestCase):
         driver.find_element_by_link_text("admin").click()
         driver.find_element_by_link_text("Logout").click()
         self.assertEqual(
-            "Thank you and Good bye !!",
+            "Successfully Logged Out!",
             driver.find_element_by_css_selector("h1.page-header").text)
 
     def is_element_present(self, how, what):
