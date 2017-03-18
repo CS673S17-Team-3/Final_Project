@@ -5,28 +5,21 @@ import time
 from django.test.testcases import LiveServerTestCase
 from selenium import webdriver
 
-from app import utils
+from issue_tracker import utils
 
 
 class CommonLiveServerTestCase(LiveServerTestCase):
     """Common methods for all tests."""
 
-    DEFAULT_PAUSE_TIME = 0.25
+    DEFAULT_PAUSE_TIME = 5
 
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.user_name = 'username'
-        self.user_pw = '%spw' % self.user_name
-        utils.create_user(first='Jane',
-                          last='Doe',
-                          username=self.user_name)
-        self.super_user_name = 'superuser'
-        self.super_user_pw = '%spw' % self.super_user_name
-        utils.create_super_user(first='Super',
-                                last='Woman',
-                                username=self.super_user_name)
-        utils.create_users(users=utils.USERS)
-        utils.create_issues(number_of_issues=10)
+        self.user_pw = 'usernamepw'
+        self.super_user_name = 'test'
+        self.super_user_pw = 'testpw'
+
 
     def tearDown(self):
         self.driver.quit()

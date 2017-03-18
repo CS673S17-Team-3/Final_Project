@@ -15,7 +15,7 @@ class TestLoginFail(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
-        self.base_url = "http://localhost:8000"
+        self.base_url = "http://127.0.0.1:8000"
         self.verificationErrors = []
         self.accept_next_alert = True
 
@@ -37,30 +37,33 @@ class TestLoginFail(unittest.TestCase):
         driver.get(self.base_url + "/")
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("admin")
+        driver.find_element_by_id("username").send_keys("test")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("pass")
+        driver.find_element_by_id("password").send_keys("testpw")
         driver.find_element_by_xpath("//button[@type='submit']").click()
+
         self.assertEqual(
-            "admin",
-            driver.find_element_by_link_text("admin").text)
-        driver.find_element_by_link_text("admin").click()
-        driver.find_element_by_link_text("Logout").click()
+            "test",
+            driver.find_element_by_link_text("test").text)
+        driver.find_element_by_id("id_username_link").click()
+        driver.find_element_by_id("id_logout_link").click()
 
     def test_logout(self):
         driver = self.driver
         driver.get(self.base_url + "/")
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("admin")
+        driver.find_element_by_id("username").send_keys("test")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("pass")
+        driver.find_element_by_id("password").send_keys("testpw")
         driver.find_element_by_xpath("//button[@type='submit']").click()
-        driver.find_element_by_link_text("admin").click()
-        driver.find_element_by_link_text("Logout").click()
+        time.sleep(3)
+        driver.find_element_by_id("id_username_link").click()
+        driver.find_element_by_id("id_logout_link").click()
+        time.sleep(3)
         self.assertEqual(
             "Successfully Logged Out!",
-            driver.find_element_by_css_selector("h1.page-header").text)
+            driver.find_element_by_id("id_signout_header").text)
 
     def is_element_present(self, how, what):
         try:
