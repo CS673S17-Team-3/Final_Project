@@ -19,14 +19,15 @@ class TestIterations(unittest.TestCase):
         self.verificationErrors = []
         self.accept_next_alert = True
 
+    @unittest.skip("this is testing code that doesnt exist anymore.")
     def test_iterations(self):
         driver = self.driver
         driver.get(self.base_url + "/")
         driver.find_element_by_link_text("Sign In").click()
         driver.find_element_by_id("username").clear()
-        driver.find_element_by_id("username").send_keys("admin")
+        driver.find_element_by_id("username").send_keys("test")
         driver.find_element_by_id("password").clear()
-        driver.find_element_by_id("password").send_keys("pass")
+        driver.find_element_by_id("password").send_keys("testpw")
         driver.find_element_by_xpath("//button[@type='submit']").click()
         driver.find_element_by_xpath(
             "//a[@onclick=\"showDialog('/req/newproject');\"]").click()
@@ -192,7 +193,7 @@ class TestIterations(unittest.TestCase):
             self.fail("time out")
         driver.find_element_by_link_text("Delete Project").click()
         time.sleep(1)
-        driver.find_element_by_link_text("admin").click()
+        driver.find_element_by_link_text("test").click()
         driver.find_element_by_link_text("Logout").click()
 
     def is_element_present(self, how, what):

@@ -1,5 +1,5 @@
 from selenium.webdriver.common.keys import Keys
-from app.tests import base_testcase
+import base_testcase
 
 
 class CreateIssueTestCase(base_testcase.CommonLiveServerTestCase):
@@ -11,14 +11,17 @@ class CreateIssueTestCase(base_testcase.CommonLiveServerTestCase):
         Arg:
           with_title: boolean for determine whether to populate a title.
         """
-        self.driver.get('localhost:8081/issue/create')
-        self.driver.find_element_by_id(
-            'id_username').send_keys(self.super_user_name)
-        self.driver.find_element_by_id(
-            'id_password').send_keys(self.super_user_pw)
-        self.driver.find_element_by_id('id_password').send_keys(Keys.ENTER)
+        self.driver.get('http://127.0.0.1:8000/issue_tracker/issue/create')
+        self.driver.find_element_by_id('username').send_keys(
+            self.super_user_name)
+        self.driver.find_element_by_id('password').send_keys(
+            self.super_user_pw)
+        self.driver.find_element_by_id('password').send_keys(Keys.ENTER)
+        self.pause()
+        self.driver.get('http://127.0.0.1:8000/issue_tracker/issue/create')
+        self.pause()
         self.driver.find_element_by_xpath(
-            '//*[@id="id_project"]/option[2]').click()
+            "//*[@name='project']/option[2]").click()
         self.driver.find_element_by_xpath(
             '//*[@id="id_issue_type"]/option[2]').click()
         if with_title:
@@ -37,8 +40,7 @@ class CreateIssueTestCase(base_testcase.CommonLiveServerTestCase):
     def test_create_issue(self):
         """Positive test case for creating a new issue."""
         self.create_issue(with_title=True)
-        self.assertEquals('http://localhost:8081/issue/view/11/',
-                          self.driver.current_url)
+        assert "http://127.0.0.1:8000/issue_tracker/issue/view/" in self.driver.current_url
 
     def test_create_issue_validation(self):
         """Create an invalid issue without a title."""

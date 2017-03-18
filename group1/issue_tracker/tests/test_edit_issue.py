@@ -1,5 +1,5 @@
 from selenium.webdriver.common.keys import Keys
-from app.tests import base_testcase
+import base_testcase
 import unittest
 
 
@@ -12,7 +12,7 @@ class CreateIssueTestCase(base_testcase.CommonLiveServerTestCase):
         # creating dynamically, but there's a better way to do this when we
         # have time using mocks or a script
 
-        self.driver.get('localhost:8081/issue/create')
+        self.driver.get('http://127.0.0.1:8081/issue/create')
         self.driver.find_element_by_id(
             'id_username').send_keys(self.super_user_name)
         self.driver.find_element_by_id(
