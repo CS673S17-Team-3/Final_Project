@@ -62,7 +62,7 @@ class TestLoginFail(unittest.TestCase):
         driver.find_element_by_id("id_logout_link").click()
         time.sleep(3)
         self.assertEqual(
-            "Thank you and Good bye !!",
+            "Successfully Logged Out!",
             driver.find_element_by_id("id_signout_header").text)
 
     def is_element_present(self, how, what):
