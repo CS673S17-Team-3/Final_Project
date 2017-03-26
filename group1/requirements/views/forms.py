@@ -10,7 +10,7 @@ from requirements.models.task import Task
 from requirements.models.iteration import Iteration
 from requirements.models.story_comment import StoryComment
 from django.forms.models import inlineformset_factory
-
+import re
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -22,6 +22,14 @@ class SignUpForm(UserCreationForm):
                 field.widget.attrs['class'] += 'form-control'
             else:
                 field.widget.attrs.update({'class': 'form-control'})
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get("password1")
+        # ensure that the password meets our new security standards
+        password_test = re.match(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$', password1);
+        if not password_test:
+            raise forms.ValidationError('Your password must be at least 8 characters long and must '
+            'contain at least one uppercase letter, one lowercase letter, and one number.')
 
     class Meta:
         model = User
