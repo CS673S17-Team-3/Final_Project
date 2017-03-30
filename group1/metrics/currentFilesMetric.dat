@@ -14,40 +14,52 @@ CSS                              1              1              0            101
 -------------------------------------------------------------------------------
 SUM:                             9            143             72            780
 -------------------------------------------------------------------------------
-./communication/
-    4464 text files.
-    2540 unique files.                                          
-Complex regular subexpression recursion limit (32766) exceeded at /usr/bin/cloc line 7272.
-Complex regular subexpression recursion limit (32766) exceeded at /usr/bin/cloc line 7272.
-Complex regular subexpression recursion limit (32766) exceeded at /usr/bin/cloc line 7272.
-Complex regular subexpression recursion limit (32766) exceeded at /usr/bin/cloc line 7272.
-    2246 files ignored.
 
-github.com/AlDanial/cloc v 1.68  T=4.16 s (545.2 files/s, 89182.1 lines/s)
+./communication/django
+
+       7 text files.
+       7 unique files.                              
+       2 files ignored.
+
+github.com/AlDanial/cloc v 1.68  T=0.02 s (384.1 files/s, 22825.5 lines/s)
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-JavaScript                    1511          40322          67169         166845
-Markdown                       267          13255              0          31825
-JSON                           318             39              0          25737
-XML                              8           3007           1289           5989
-HTML                            21            281             37           5460
-C/C++ Header                     2            511            117           2684
-make                            46            365            337           1128
-CSS                              4            121             11            614
-Perl                             1             87            170            582
-YAML                            58             26             26            570
-DTD                              1            179            177            514
-CoffeeScript                     5            101             59            441
-C++                              4             68             32            424
-Python                          10             69             29            227
-D                                8              0              0            116
-Bourne Shell                     3             14             15             59
-C                                1              7              4             23
-Lisp                             1              0              0              6
+HTML                             1             43             37            186
+Python                           6             29             17            104
 -------------------------------------------------------------------------------
-SUM:                          2269          58452          69472         243244
+SUM:                             7             72             54            290
 -------------------------------------------------------------------------------
+
+
+
+./communication/node/ #ignore the module files
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+JavaScript                       2             37             53            135
+-------------------------------------------------------------------------------
+JSON                             1              0              0             26
+-------------------------------------------------------------------------------
+SUM:                             3             3              53            161
+-------------------------------------------------------------------------------
+
+
+./communication/tests/
+
+       1 text file.
+       1 unique file.                              
+       0 files ignored.
+
+github.com/AlDanial/cloc v 1.68  T=0.01 s (117.5 files/s, 11161.9 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Python                           1             26              1             68
+-------------------------------------------------------------------------------
+
+
+
 ./functional_tests/
        1 text file.
        1 unique file.                              
