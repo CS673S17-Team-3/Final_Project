@@ -21,6 +21,8 @@ This document summarizes the feature-set for the chat tool application. It shoul
 + API documentation does not exist
 + Domain model documentation does not exist
 + ERD does not exist
++ Duplicate files and trees
++ PYC files checked into repo
 
 
 
