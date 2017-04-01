@@ -1,4 +1,4 @@
-#Overview
+# Overview
 
 This document summarizes the feature-set for the chat tool application. It should be used as a reference for determining new stories in future semesters. This document should be updated at the end of each semester to provide context on the feature-set that has been completed.
 
