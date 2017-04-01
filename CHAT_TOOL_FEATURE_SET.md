@@ -18,7 +18,9 @@ This document summarizes the feature-set for the chat tool application. It shoul
 + Some Unit tests / UI tests did not pass when test suite was run
 + No message limit applied to room messages
 + Room Upload functionality does not work
-+
++ API documentation does not exist
++ Domain model documentation does not exist
++ ERD does not exist
 
 
 
