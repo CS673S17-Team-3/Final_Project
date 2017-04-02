@@ -11,6 +11,7 @@ class Room(models.Model):
 		return self.name
 
 	name = models.CharField(max_length=100)
+	creator = models.ForeignKey(User)
 	description = models.CharField(max_length=500)
 	public = models.BooleanField(default=True)
 	#users = models.ManyToManyField(User)
