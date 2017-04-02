@@ -99,4 +99,9 @@ z-index: 1000000;
   cursor: inherit;
   display: block;
 }
-
+span#charLimitMessage{
+  display: none;
+  color: red;
+  text-align: center;
+  font-size: 20px;
+}

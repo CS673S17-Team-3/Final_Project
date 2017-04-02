@@ -69,11 +69,12 @@
       </li>
     </div>
 
+          
     <div id="messages" class="col-xs-12 col-lg-10 col-md-9 col-md-offset-3 col-lg-offset-2 message">
-
       <div id="message_bar" class="col-lg-10 col-xs-12 message">
+        <span id="charLimitMessage">Don't enter more than 1000 characters</span>
         <div class="input-group input-group-lg">
-          <input id="text" type="text" class="form-control" placeholder="Enter a message...">
+          <input id="text" type="text" class="form-control" maxlength="1000" placeholder="Enter a message..." onkeypress="checklength()">
           <span class="input-group-btn dropup">
             <button id="sendcleartext" class="btn btn-default" type="button" onclick="display();">
               <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>

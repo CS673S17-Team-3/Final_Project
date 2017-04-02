@@ -174,6 +174,9 @@ function visible_namespace() {
 
 // Called when button is clicked
 function display() {
+  if($("#text").val().length == 0){
+    return;
+  }
   var message = {
     'username': user,
     'value': $('input#text').val(),
@@ -181,6 +184,8 @@ function display() {
   }
   sockets[visible_namespace()].emit('msg', message);
   $('input#text').val('');
+  $("#charLimitMessage").css("display", "none");
+
 }
 
 // Add a new message whenever the user presses the enter key
@@ -410,3 +415,12 @@ $(document).ready(function(){
    get_search_results();
  });
 });
+
+function checklength() {
+  if($("#text").val().length == 1000){
+    $("#charLimitMessage").css("display", "block");
+  }else{
+     $("#charLimitMessage").css("display", "none");
+  }
+}
+
