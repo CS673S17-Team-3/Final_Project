@@ -5,7 +5,7 @@ This document describes how the file system of the repo is organized.
 ```
 tree -R -L 5 -d
 source
-├── Team_Documentation                      -- contains all Team Documentation
+├── Team_Documentation
 │   ├── Team_1
 │   ├── Team_2
 │   └── Team_3
@@ -13,53 +13,90 @@ source
 │       ├── presentations
 │       ├── project_documents
 │       └── weekly_reports
-├── database                                -- contains the database file
-├── deploy_tools                            -- various scripts for deploying to a server
+├── database
+├── deploy_tools
 └── group1
     ├── comm
-    │   ├── migrations                      -- database migration scripts for the chat app
-    │   ├── static                          -- assets for the HTML template pages
+    │   ├── migrations
+    │   ├── static
     │   │   ├── emoji
     │   │   └── uploads
-    │   └── templates                       -- HTML templates for the chat app
-    │       └── comm
+    │   ├── templates
+    │   │   └── comm
+    │   └── tests
     ├── communication
     │   ├── django
     │   │   ├── comm
     │   │   │   ├── migrations
     │   │   │   └── templates
     │   │   └── group2
-    │   ├── node                            -- root directory for the node-based chat app
-    │   │   ├── node_modules                -- node dependencies
-    │   │   └── test                        -- javascript unit tests for chat app
-    │   └── tests                           -- python unit tests for django app
-    ├── functional_tests                    -- python integration tests
-    ├── group1                              -- chat tool MVC code
-    ├── issue_tracker                       -- issue tracker MVC code
+    │   ├── node
+    │   │   ├── node_modules
+    │   │   │   ├── basic-auth
+    │   │   │   ├── debug
+    │   │   │   ├── depd
+    │   │   │   ├── ee-first
+    │   │   │   ├── express
+    │   │   │   ├── express-cors
+    │   │   │   ├── lodash
+    │   │   │   ├── mocha
+    │   │   │   ├── morgan
+    │   │   │   ├── ms
+    │   │   │   ├── multer
+    │   │   │   ├── node-rest-client
+    │   │   │   ├── on-finished
+    │   │   │   ├── on-headers
+    │   │   │   ├── request
+    │   │   │   ├── restler
+    │   │   │   ├── socket.io
+    │   │   │   ├── supertest
+    │   │   │   └── unit.js
+    │   │   └── test
+    │   └── tests
+    ├── group1
+    ├── issue_tracker
     │   ├── management
     │   │   └── commands
-    │   ├── migrations                      -- database migrations scripts for issue tracker
-    │   ├── static                          -- assets for the HTML template pages
+    │   ├── migrations
+    │   ├── static
     │   │   ├── css
     │   │   ├── fonts
     │   │   ├── images
     │   │   ├── js
     │   │   └── libs
-    │   ├── templates                       -- HTML templates for issue tracker
-    │   └── tests                           -- unit tests for issue tracker
-    ├── project_router                      -- project router MVC code
+    │   └── templates
+    ├── project_router
     │   ├── migrations
     │   ├── static
+    │   └── templates
+    ├── requirements
+    │   ├── migrations
+    │   ├── models
+    │   ├── static
+    │   │   ├── bootstrap
+    │   │   │   ├── css
+    │   │   │   ├── fonts
+    │   │   │   └── js
+    │   │   ├── bs-datetimepicker
+    │   │   │   ├── css
+    │   │   │   ├── js
+    │   │   │   └── less
+    │   │   ├── css
+    │   │   ├── images
+    │   │   ├── img
+    │   │   ├── js
+    │   │   ├── projects
+    │   │   └── sb-admin
+    │   │       ├── css
+    │   │       └── font-awesome
     │   ├── templates
-    │   └── tests
-    └── requirements                        -- requirements MVC code
-        ├── migrations
-        ├── models
-        ├── static
-        ├── templates
-        ├── templatetags
-        ├── tests
-        └── views
+    │   ├── templatetags
+    │   ├── tests
+    │   └── views
+    └── selenium_tests
+        ├── issue_tracker
+        ├── project_router
+        └── requirements
 
 92 directories
 ```

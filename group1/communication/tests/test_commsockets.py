@@ -39,12 +39,12 @@ class TestInfrastructure(unittest.TestCase):
 		pass
 
 class TestAPI(unittest.TestCase):
-	
+
 	def test_get_users(self):
 		res = requests.get('http://localhost/api/users/?format=json')
 		users = res.json()
 		self.assertTrue(res.status_code == 200)
-		self.assertTrue( len(users) > 0 ) 
+		self.assertTrue( len(users) > 0 )
 
 	def test_get_messages(self):
 		res = requests.get('http://localhost/api/messages/?format=json')
@@ -55,7 +55,7 @@ class TestAPI(unittest.TestCase):
 		res = requests.get('http://localhost/api/rooms/?format=json')
 		rooms = res.json()
 		self.assertTrue(res.status_code == 200)
-		self.assertTrue( len(rooms) > 0 ) 
+		self.assertTrue( len(rooms) > 0 )
 
 	def test_create_public_room(self):
 		room_data = {
@@ -82,14 +82,9 @@ class TestSocketIO(unittest.TestCase):
 			global_ns = socket.define(BaseNamespace, '/')
 			global_ns.emit('user', {'username':'test', 'action':'connect'})
 
-			res = requests.get('http://localhost:3000/users')			
+			res = requests.get('http://localhost:3000/users')
 			self.assertTrue('test' in res.json() )
 
-
-class SeleniumTests(unittest.TestCase):
-
-	def test_something(self):
-		pass
 
 if __name__ == '__main__':
 	unittest.main()
