@@ -167,6 +167,9 @@
         <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
           <li role="presentation">
             <a role="menuitem" tabindex="-1" href="#" onclick="search_show()">Search</a>
+            <a role="menuitem" tabindex="-1" href="#" onclick="editteam()">Edit Team</a>
+
+
           </li>
         </ul>
       </div>
@@ -196,7 +199,7 @@
             <h4 class="modal-title">Create New Team</h4>
           </div>
           <div class="modal-body">
-            <p>Team Name:</p><input id="teamname" type="text" class="form-control" placeholder="Enter a name ...">
+            <p>Team Name:</p><input id="edame" type="text" class="form-control" placeholder="Enter a name ...">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -206,23 +209,28 @@
       </div>
     </div> -->
 
+
 <div id="myModal" class="modal fade">
 <div class="modal-dialog">
 <div class="modal-content">
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-<h4 class="modal-title">Create New Team</h4>
+<h4 class="modal-title" id="modalName"></h4>
 </div>
 <div class="modal-body">
 <p>Team Name:</p><input id="teamname" type="text" class="form-control" placeholder="Enter a name ...">
 </div>
-<div class="modal-footer">
-<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-<button type="button" class="btn btn-primary" onclick="createTeamFunc()">Save</button>
+<div class="modal-footer" id="modalFooter">
+<button type="button" class="btn btn-default" id="cancelButton" data-dismiss="modal">Cancel</button>
+<button type="button" class="btn btn-primary" id="saveTeam">Save</button> 
+
 </div>
 </div>
 </div>
 </div>
+
+
+
 <div id="inputmodal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">

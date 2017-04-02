@@ -18,7 +18,22 @@ function getCookie(name) {
 }
 
 function createteam(){
+  $("#deleteButton").remove();
   $("#myModal").modal('show');
+  $("#saveTeam").click(function(){
+    createTeamFunc();
+  });
+  $("#modalName").text("Create New Team");
+
+ 
+}
+function editteam(){
+  $("#myModal").modal('show');
+  $("#saveTeam").click(function(){
+    editTeamFunc();
+  });
+  $("#modalName").text("Edit Team");
+  $("<button type='button' class='btn btn-default' id='deleteButton' onclick='deleteTeamFunc()'>Delete Team</button>").insertBefore("#cancelButton");
 }
 
 // EMOJI STUFF
@@ -92,6 +107,7 @@ global.on('room', function(room) {
 });
 
 function createTeamFunc() {
+
 
     var new_team_name = $('input#teamname').val();
     var room_data = {
@@ -410,3 +426,74 @@ $(document).ready(function(){
    get_search_results();
  });
 });
+function editTeamFunc() {
+  //The current room has the 'active' class in its div element
+  var curroom;
+
+  global_room_list.forEach( function(room){
+    var room_num = 'room-' + room.id;
+    if ($('div#room-list a').filter('#' + room_num).hasClass('active')) {
+      curroom = room;
+    }
+  });
+  var edit_team_name = $('input#teamname').val();
+  var room_data = {
+        'id': curroom.id,
+        'name': edit_team_name,
+        'description': curroom.description,
+        'public': curroom.public,
+    };
+  console.log(curroom);
+  $.ajax({
+      type: 'PUT',
+      url: 'http://' + server_host + ':' + server_port + '/api/rooms/',
+      beforeSend: function (request) {
+          request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      },
+      data: room_data,
+      success: function() {
+          // global_room_list = [];
+          // populate_room_list();
+      },
+  });
+  $("#editTeamModal").modal('hide');
+      location.reload();
+    }
+
+function deleteTeamFunc() {
+  if (confirm('Are you sure you would like to delete this team?')) {
+           
+       
+  //The current room has the 'active' class in its div element
+  var curroom;
+
+  global_room_list.forEach( function(room){
+    var room_num = 'room-' + room.id;
+    if ($('div#room-list a').filter('#' + room_num).hasClass('active')) {
+      curroom = room;
+    }
+  });
+  
+  console.log(curroom);
+  $.ajax({
+      type: 'DELETE',
+      url: 'http://' + server_host + ':' + server_port + '/api/rooms/',
+      
+      beforeSend: function (request) {
+          request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      },
+      data: curroom,
+      success: function() {
+        curroom.delete()
+         
+      },
+      
+  });
+  $("#editTeamModal").modal('hide');
+      location.reload();
+       } else {
+           return false;
+       }
+    }
+   
+    
