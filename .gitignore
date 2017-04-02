@@ -16,3 +16,4 @@ venv/
 group1/communication/node/node_modules/*
 *.orig
 *.sqlite3
+geckodriver.log

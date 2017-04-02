@@ -1,4 +1,11 @@
-SELENIUM_README.md
+
+### Unit Tests
+To run just the Unit Tests:
+```
+python manage.py test unit_tests
+```
+
+### Selenium Tests
 
 In order to run the Selenium tests, you will need to execute the following steps:
 
