@@ -6,7 +6,7 @@ These instructions may be followed on any Unix-like system, including OS X.
 
 ## Getting started
 
-First, clone this repo and checkout your Team's respective `master` branch:
+First, clone this repo and checkout your Team's respective `master` branch. You may use sudo if permission denied:
 
 ```
 For Team 2:
@@ -15,6 +15,8 @@ $ git checkout develop
 
 For Team 3:
 $ git clone https://github.com/CS673S17-Team-3/Final_Project.git
+(In your Final_Project folder:)
+$ git init
 $ git checkout master
 
 $ cd Final_Project
@@ -30,6 +32,7 @@ $ source venv/bin/activate
 You will know when your virtualenv is 'active' when your terminal looks something like this:
 ```
 (venv) $ <----terminal prompt contains the name of your virtualenv in paranthesis
+e.g.: (venv) cs673@ubuntu:/home/Final_Project$ 
 ```
 
 Install the Python requirements using `pip`:
@@ -41,7 +44,7 @@ $ pip install -r requirements.txt
 Create the database:
 
 ```
-$ mkdir database
+$ mkdir ./group1/database
 $ python manage.py makemigrations
 $ python manage.py migrate
 ```
@@ -78,7 +81,9 @@ Prepare the Node server by making sure all your node modules are up-to-date:
 
 ```
 $ cd Final_Project/group1/communication/node
-$ npm install
+$ sudo apt install nodejs-legacy
+$ npm install morgan
+$ node main.js
 ```
 
 Then you can start the Node server:
@@ -88,7 +93,7 @@ $ node main.js
 ```
 
 You should now be able to open the [chat application on your location
-server](http://127.0.0.1:8000/communication/) in your browser and log in to use
+server](http://127.0.0.1:8000/communication/) in your browser and log in as superuser to use
 chat.
 
 

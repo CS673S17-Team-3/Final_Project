@@ -19,6 +19,7 @@ class TestUserProjectAndIterationPermission(unittest.TestCase):
         self.verificationErrors = []
         self.accept_next_alert = True
 
+    @unittest.skip("this is testing code that doesnt exist anymore.")
     def test_user_project_and_iteration_permission(self):
         driver = self.driver
         driver.get(self.base_url + "/")

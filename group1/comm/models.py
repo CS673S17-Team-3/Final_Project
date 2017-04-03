@@ -33,3 +33,17 @@ class UserRoom(models.Model):
 
 	class Meta:
 		unique_together = ('user', 'room')
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+#Delete oldest message when room has reached 5000 messages
+@receiver(post_save, sender=Message)
+def delete_oldest(sender, instance, **kwargs):
+	curroom = instance.room
+	queryset = Message.objects.defer('text').filter(room = curroom)
+	count = queryset.count()
+	if (count > 5000):
+		oldest = queryset[:count-5000]
+		for message in oldest:
+			message.delete()
