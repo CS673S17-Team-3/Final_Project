@@ -8,8 +8,9 @@ var os = require('os');
 var util = require('util');
 var _ = require('lodash');
 var multer = require('multer');
-var fs = require('fs');
+var fs = require('fs-extra');
 var crypto = require('crypto');
+var path = require('path');
 
 app.use(morgan('combined'))
 
@@ -20,10 +21,13 @@ app.all('/*', function(req, res, next) {
     next();
 });
 
+
+// sets path of home directory according to the OS
+var homedir = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
 // just for file upload
 var done = false;
 app.use(multer({
-        'dest': '../../../../static/uploads',
+        'dest': '../../comm/static/uploads',
         onFileUploadStart: function(file) {
                 console.log(file.originalname + ' is starting...');
         },
@@ -36,10 +40,15 @@ app.use(multer({
 app.post('/upload', function(req,res){
         if (done==true) {
                 var hash = crypto.randomBytes(20).toString('hex');
-                fs.mkdir( util.format('/home/pgmvt/sites/www.3blueprints.com/static/uploads/%s', hash), function(){
-                        var final_path = util.format('%s/%s', hash, req.files.fileUpload.originalname);
-                        fs.rename(req.files.fileUpload.path, '/home/pgmvt/sites/www.3blueprints.com/static/uploads/' + final_path);
+				var directory =  path.join(homedir + '/sites/www.3blueprints.com/static/uploads/');
+                fs.mkdirs(path.join(directory,hash), function(err) {
+                        if(err){
+                            console.log(err);
+                        } else {
+                        var final_path = path.join(hash, req.files.fileUpload.originalname);
+                        fs.rename(req.files.fileUpload.path, directory + final_path);
                         res.send('static/uploads/' + final_path);
+                        }
                 });
         }
 });

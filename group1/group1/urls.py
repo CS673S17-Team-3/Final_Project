@@ -17,6 +17,7 @@ router.register(r'roomuser', views.UserRoomViewSet)
 router.register(r'roomuserdata', views.UserRoomDataViewSet)
 
 
+
 urlpatterns = patterns('',
                         url(r'^signin', users.signin),
                         url(r'^signout', users.signout),
