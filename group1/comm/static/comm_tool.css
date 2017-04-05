@@ -78,7 +78,7 @@ div.messagecontent {
 padding-top: 70px;
 padding-bottom: 60px;    
 }
-div#mymodal{
+div#mymodal, div#editTeamModal{
 z-index: 1000000;
 }
 .btn-file {
@@ -99,4 +99,8 @@ z-index: 1000000;
   cursor: inherit;
   display: block;
 }
-
+button#deleteButton {
+  background-color: #990000;
+  float: left;
+  color: white;
+}

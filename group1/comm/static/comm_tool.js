@@ -18,7 +18,31 @@ function getCookie(name) {
 }
 
 function createteam(){
+  //Show modal to create team
+  $("#deleteButton").remove();
   $("#myModal").modal('show');
+  $("#saveTeam").attr('onclick', 'createTeamFunc()');
+  $("#modalName").text("Create New Team");
+  $("#teamname").val(''); 
+}
+
+var curroom;
+
+function editteam(){
+  //Get the current room that the user is in
+  curroom = getCurrentRoom();
+  //Check if current room was created by the user who is attempting to edit it
+  if (curroom.creator == 'http://' + server_host + ':' + server_port + '/api/users/' + user_id + '/' || curroom.creator == 'http://localhost:8000/api/users/' + user_id + '/') {
+    //Show modal to edit or delete team
+    $("#deleteButton").remove();
+    $("#myModal").modal('show');
+    $("#saveTeam").attr('onclick', 'editTeamFunc()');
+    $("#modalName").text("Edit Team");
+    $("#teamname").val('');
+    $("<button type='button' class='btn btn-default' id='deleteButton' onclick='deleteTeamFunc()'>Delete Team</button>").insertBefore("#cancelButton");
+  } else {
+    alert("You do not have permission to edit this room!");
+  } 
 }
 
 // EMOJI STUFF
@@ -89,28 +113,51 @@ global.emit('user', {
 
 global.on('room', function(room) {
 	add_new_room(room);
+  switch_room('room-' + room.id);
+});
+
+global.on('updateroom', function(room) {
+  //Update the heading and sidebar to reflect changes
+  $('span#room_title').text(room.name);
+  var room_link_html = "<span class='glyphicon glyphicon-comment padded-icon' ariad-hidden='true'></span>" + room.name + "<span class='badge'></span>";
+  $('a#room-' + room.id).html(room_link_html);
+
+  //Update the global room list with new name
+  var i;
+  for (i = 0; i < global_room_list.length; i++) {
+    if (global_room_list[i].id == room.id) {
+      global_room_list[i] = room;
+      break;
+    }
+  }
+  $("#myModal").modal('hide');
+});
+
+global.on('deleteroom', function(room) {
+  //Remove the team from the sidebar
+  $("#room-" + room.id).remove();
+  for (i = 0; i < global_room_list.length; i++) {
+    if (global_room_list[i].id == room.id) {
+      global_room_list.splice(i, 1);
+      break;
+    }
+  }
+  $("#myModal").modal('hide');
+  switch_room('room-' + global_room_list[0].id);
 });
 
 function createTeamFunc() {
 
     var new_team_name = $('input#teamname').val();
+
     var room_data = {
-        'name': new_team_name,
-        'description': 'test',
-        'public': true
+        name: new_team_name,
+        creator_id: user_id,
+        description: 'test',
+        public: true
     };
 
-    $.ajax({
-        type: 'POST',
-        url: 'http://' + server_host + ':' + server_port + '/api/rooms/',
-        beforeSend: function (request) {
-            request.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-        },
-        data: room_data,
-        success: function(room) {
-            global.emit('room', room);
-        },
-    });
+    global.emit('room', room_data);
 
     $("#myModal").modal('hide');
 }
@@ -410,3 +457,37 @@ $(document).ready(function(){
    get_search_results();
  });
 });
+
+function getCurrentRoom() {
+  //The current room has the 'active' class in its div element
+  var result;
+  global_room_list.forEach( function(room){
+    var room_num = 'room-' + room.id;
+    if ($('div#room-list a').filter('#' + room_num).hasClass('active')) {
+      result = room;
+    }
+  });
+
+  return result;
+}
+
+function editTeamFunc() {
+  var room_data = {
+    id: curroom.id,
+    name: $('input#teamname').val(),
+    creator: 'http://' + server_host + ':' + server_port + '/api/users/' + user_id + '/',
+    description: curroom.description,
+    public: curroom.public,   
+  };
+  global.emit('updateroom', room_data);
+}
+
+function deleteTeamFunc() {
+  if (confirm('Are you sure you would like to delete this team?')) {  
+    global.emit('deleteroom', curroom);
+  } else {
+    return false;
+  }
+}
+   
+    
