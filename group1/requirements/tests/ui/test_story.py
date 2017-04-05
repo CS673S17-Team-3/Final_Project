@@ -17,13 +17,13 @@ class TestStory(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
-        self.base_url = "http://localhost:8000"
+        self.base_url = "http://127.0.0.1:8000"
         self.verificationErrors = []
         self.accept_next_alert = True
         datetime.datetime.strptime("04/01/2015", "%m/%d/%Y").date()
         self.user = User(
-            username='admin',
-            password='pass'
+            username='test',
+            password='testpw'
         )
         self.project = Project(
             title='___Test Project 1___',
@@ -64,6 +64,7 @@ class TestStory(unittest.TestCase):
                            Task(description='___Task Test 2 (Edit)___'),
                            Task(description='___Task Test 3 (Edit)___'))
 
+    @unittest.skip("this is testing code that doesnt exist anymore.")
     def test_story(self):
         if not self.home():
             self.assertTrue(False, "Error navigating to home page.")
@@ -113,8 +114,7 @@ class TestStory(unittest.TestCase):
         try:
             driver = self.driver
             project = self.project
-            driver.find_element_by_css_selector(
-                "i.glyphicon.glyphicon-plus").click()
+            driver.find_element_by_id("id_create_project_link").click()
             time.sleep(2)
             driver.find_element_by_id("id_title").clear()
             driver.find_element_by_id("id_title").send_keys(project.title)

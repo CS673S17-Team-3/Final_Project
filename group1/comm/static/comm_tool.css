@@ -366,6 +366,9 @@ div#mymodal{
   color: gray;
 }
 
+div#editTeamModal{
+z-index: 1000000;
+}
 
 .button-comm {
   background-color: #484848;
@@ -398,5 +401,12 @@ div#mymodal{
   display: block;
 }
 
+
 /* END BUTTONS */
+
+button#deleteButton {
+  background-color: #990000;
+  float: left;
+  color: white;
+}
 
