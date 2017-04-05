@@ -47,3 +47,11 @@ def delete_oldest(sender, instance, **kwargs):
 		oldest = queryset[:count-5000]
 		for message in oldest:
 			message.delete()
+
+
+from django.db.models.signals import pre_save
+@receiver(pre_save, sender=Message)
+def prevent_maxChar(sender, instance, **kwargs):
+	message = instance.text
+	if len(message)>1050:
+		sys.exit()

@@ -401,6 +401,14 @@ z-index: 1000000;
   display: block;
 }
 
+span#charLimitMessage{
+  display: none;
+  color: red;
+  text-align: center;
+  font-size: 20px;
+}
+
+
 
 /* END BUTTONS */
 
@@ -409,4 +417,3 @@ button#deleteButton {
   float: left;
   color: white;
 }
-
