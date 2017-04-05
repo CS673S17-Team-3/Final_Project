@@ -11,6 +11,7 @@ class Room(models.Model):
 		return self.name
 
 	name = models.CharField(max_length=100)
+	creator = models.ForeignKey(User)
 	description = models.CharField(max_length=500)
 	public = models.BooleanField(default=True)
 	#users = models.ManyToManyField(User)
@@ -46,3 +47,11 @@ def delete_oldest(sender, instance, **kwargs):
 		oldest = queryset[:count-5000]
 		for message in oldest:
 			message.delete()
+
+
+from django.db.models.signals import pre_save
+@receiver(pre_save, sender=Message)
+def prevent_maxChar(sender, instance, **kwargs):
+	message = instance.text
+	if len(message)>1050:
+		sys.exit()

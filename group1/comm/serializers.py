@@ -12,7 +12,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class RoomSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Room
-		fields = ('id', 'name', 'description', 'public')
+		fields = ('id', 'name', 'creator', 'description', 'public')
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
