@@ -12,6 +12,7 @@ cloc unit_tests/
 echo "project_router folder: \n"
 cloc project_router/
 
-
+echo "manage.py file: \n"
 cloc manage.py
+echo "setting file: \n"
 cloc settings.html
