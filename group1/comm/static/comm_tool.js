@@ -199,7 +199,7 @@ function increment_badge(room_id){
 }
 
 function add_message(msg, target) {
-  $('div#room-' + target).append(msg + '<br>');
+  $('div#room-' + target).append('<p>' + msg + '</p>'); //changed from <br> after to contained in <p>
   //add emoji to message content
   var emoji_string=Object.getOwnPropertyNames(emoji_image);
   if (msg.indexOf('::') != -1) {
@@ -312,10 +312,10 @@ function add_new_room(room) {
         'id': 'room-' + room.id,
         'class': 'list-group-item room-link'
       })
-      .append( $('<span />', {
-        'class': 'glyphicon glyphicon-comment padded-icon',
-        'ariad-hidden': true
-      }))
+      //.append( $('<span />', {
+      //  'class': 'glyphicon glyphicon-comment padded-icon', //removed append
+      //  'aria-hidden': true
+      //}))
       .append(room.name)
       .append( $('<span />',{
         'class': 'badge'
@@ -352,12 +352,14 @@ function populate_user_list() {
           $('<a />', {
             'href': '#'
           })
-          .append( $('<span />', {
-            'class': 'glyphicon glyphicon-user padded-icon'
-            })).append(user.username)
+          //.append( $('<span />', {
+          //  'class': 'glyphicon glyphicon-user padded-icon'
+          //  }))
+        .append(user.username)
         })
 
         $('ul.user_list').append(user_link);
+        $('user_list li:before').append(color_aqua);
 
       });
     });
