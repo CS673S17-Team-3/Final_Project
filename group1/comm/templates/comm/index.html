@@ -229,14 +229,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Create New Team</h4>
+        <h4 id="modalName" class="modal-title">Create New Team</h4>
       </div>
       <div class="modal-body">
         <p>Team Name:</p><input id="teamname" type="text" class="form-control" placeholder="Enter a name ...">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn button-comm btn-primary" onclick="createTeamFunc()">Save</button>
+        <button id="cancelButton" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="saveTeam" type="button" class="btn button-comm btn-primary" onclick="createTeamFunc()">Save</button>
       </div>
     </div>
   </div>
