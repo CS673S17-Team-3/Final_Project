@@ -199,7 +199,7 @@ function increment_badge(room_id){
 }
 
 function add_message(msg, target) {
-  $('div#room-' + target).append('<p>' + msg + '</p>'); //changed from <br> after to contained in <p>
+  $('div#room-' + target).append('<span class="msg"><p>' + msg + '</p><span class="msgoptions">...</span><ul class="msgmenu"><li>edit</li><li class="red">delete</li></ul></span>'); //changed from <br> after to contained in <p>
   //add emoji to message content
   var emoji_string=Object.getOwnPropertyNames(emoji_image);
   if (msg.indexOf('::') != -1) {
