@@ -146,6 +146,12 @@ global.on('deleteroom', function(room) {
   switch_room('room-' + global_room_list[0].id);
 });
 
+global.on('editmsg', function(msg) {
+  var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
+  message_text = message_text.splice(0,0,'<b>');
+  $("p#message-" + msg.id).html(message_text);
+});
+
 function createTeamFunc() {
 
     var new_team_name = $('input#teamname').val();
@@ -189,6 +195,7 @@ function add_socket(room) {
       }
       add_message('<b>' + msg.username + '</b>: ' + msg.value, room.id);
     });
+
     sockets[room.id] = socket;
 }
 
@@ -198,9 +205,16 @@ function increment_badge(room_id){
   badge.text(count += 1);
 }
 
-function add_message(msg, target) {
-  $('div#room-' + target).append('<span class="msg"><p>' + msg + '</p><span class="msgoptions">...</span><ul class="msgmenu"><li>edit</li><li class="red">delete</li></ul></span>'); //changed from <br> after to contained in <p>
+function add_message(msg, msgid, msguser, target) {
+  //$('div#room-' + target).append('<span class="msg"><p id="message-' + msgid + '">' + msg + '</p><span class="msgoptions"><img src="/static/emoji/happy.jpg" style="width:15px;height:15px;margin-right:5px;">...</span><ul class="msgmenu"><li onclick="showEditMessage(' + msgid + ')">edit</li><li class="red">delete</li></ul></span>'); //changed from <br> after to contained in <p>
   //add emoji to message content
+  
+  if (msguser == user_id) {
+    $('div#room-' + target).append('<span class="msg"><p id="message-' + msgid + '">' + msg + '</p><span class="msgoptions"><img src="/static/emoji/happy.jpg" style="width:15px;height:15px;margin-right:5px;">...</span><ul class="msgmenu"><li onclick="showEditMessage(' + msgid + ')">edit</li><li class="red">delete</li></ul></span>');
+  } else {
+    $('div#room-' + target).append('<span class="msg"><p id="message-' + msgid + '">' + msg + '</p><span class="msgoptions"><img src="/static/emoji/happy.jpg" style="width:15px;height:15px;margin-right:5px;">...</span></span>');
+  }
+
   var emoji_string=Object.getOwnPropertyNames(emoji_image);
   if (msg.indexOf('::') != -1) {
     for(var i=0;i<emoji_string.length;i++){
@@ -289,9 +303,10 @@ function get_message_data(room_id) {
     $.getJSON(message_endpoint, function(data){
       data.forEach(function(msg){
         message_room = Number(msg.room.split('/api/rooms/')[1].slice(0,-1));
+        var message_user = Number(msg.user.split('/api/users/')[1].slice(0,-1));
         var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
         message_text = message_text.splice(0,0,'<b>');
-        if (message_room === room_id) { add_message(message_text, room_id) };
+        if (message_room === room_id) { add_message(message_text, msg.id, message_user, room_id) };
       });
     });
 
@@ -505,4 +520,33 @@ function deleteTeamFunc() {
   } else {
     return false;
   }
+}
+
+function showEditMessage(msgid) {
+  var prevmsg = $("p#message-" + msgid).text();
+  var usr = prevmsg.slice(0, prevmsg.indexOf(":"));
+  var msg = prevmsg.slice(prevmsg.indexOf(":") + 2);
+  $("p#message-" + msgid).html("<b>" + usr + "</b>: <input id='edit-" + msgid + "' type='text' value='" + msg + "' style='width: 80%;' required>");
+
+  $("input#edit-" + msgid).focus();
+
+  $("input#edit-" + msgid).keypress(function(e) {
+    if(e.which == 13) {
+      var newtext = usr + ": " + $("input#edit-" + msgid).val();
+      editMessage(msgid, newtext);
+    }
+  });
+
+  $("input#edit-" + msgid).focusout(function() {
+    $("p#message-" + msgid).html("<b>" + usr + "</b>: " + msg);
+  });
+}
+
+function editMessage(msgid, msgtext) {
+  var message_data = {
+    id: msgid,
+    text: msgtext
+  }
+
+  global.emit('editmsg', message_data);
 }

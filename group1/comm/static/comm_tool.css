@@ -417,6 +417,11 @@ ul.msgmenu li:hover {
   background-color: #e6e6e6;
 };
 
+input.msgedit {
+  width: 75%;
+  margin:0;
+}
+
 /* END MESSAGE */
 
 /* START MODAL */
