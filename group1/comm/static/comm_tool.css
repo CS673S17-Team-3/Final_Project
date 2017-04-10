@@ -375,10 +375,13 @@ span.msgoptions {
   display: none;
   color:#737373;
   font-weight: bold;
+  opacity: 0.5;
+  transition: opacity 0.3s;
 }
 
 span.msgoptions:hover {
   display: block;
+  opacity: 1.0;
 }
 
 span.msgoptions:hover + ul.msgmenu {
@@ -416,11 +419,6 @@ ul.msgmenu li.red {
 ul.msgmenu li:hover {
   background-color: #e6e6e6;
 };
-
-input.msgedit {
-  width: 75%;
-  margin:0;
-}
 
 /* END MESSAGE */
 
