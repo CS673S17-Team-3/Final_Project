@@ -49,6 +49,10 @@ class MessageViewSet(viewsets.ModelViewSet):
 		message = Message.objects.get(pk=id)
 		message.text = text
 		message.save()
+	def delete(self, request):
+		id = int(request.data.get("id", "0"))
+		message = Message.objects.get(pk=id)
+		message.delete()
 
 class MessageDataViewSet(viewsets.ReadOnlyModelViewSet):
 	# This viewset will show all of the messages in the message model 

@@ -569,5 +569,9 @@ function editMessage(msgid, msgtext) {
 
 function deleteMessage(msgid) {
   //Use message id to delete
-  global.emit('deletemsg', msgid);
+  if (confirm('Are you sure you would like to delete this team?')) {
+    global.emit('deletemsg', msgid);
+  } else {
+    return false;
+  }
 }
