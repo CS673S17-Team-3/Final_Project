@@ -75,8 +75,15 @@ global_namespace.on('connection', function(socket){
         });
         socket.on('room', function(room){
                 console.log('new room: '  + room.name);
-                add_new_namespace(room);
-                global_namespace.emit('room', room);
+                rooms.save(room.name, room.creator_id, room.description, room.public);
+        });
+        socket.on('updateroom', function(room){
+                rooms.update(room);
+                global_namespace.emit('updateroom', room);
+        });
+        socket.on('deleteroom', function(room) {
+                rooms.delete(room);
+                global_namespace.emit('deleteroom', room);
         });
 });
 
@@ -129,6 +136,52 @@ var messages = {
                 });
         }
 }
+
+var rooms = {
+        'save': function(name, creator_id, desc, pub) {
+                room_template = {
+                        data: {
+                                'name': name,
+                                'creator': util.format('http://localhost:8000/api/users/%s/', creator_id),
+                                'description': desc,
+                                'public': pub,
+                        },
+                        headers: { 'Content-Type': 'application/json' }
+                };
+                client.post('http://localhost:8000/api/rooms/', room_template, function(data,response) {
+                        console.log( util.format('(%s) Room %s created by user "%s"', response.statusCode, name, creator_id) );
+                        add_new_namespace(data);
+                        global_namespace.emit('room', data);
+                });
+        },
+        'update': function(room) {
+                room_template = {
+                        data: {
+                                'id': room.id,
+                                'name': room.name,
+                                'creator': room.creator,
+                                'description': room.description,
+                                'public': room.public,
+                        },
+                        headers: { 'Content-Type': 'application/json' }
+                };
+                client.put('http://localhost:8000/api/rooms/', room_template, function(data,response) {
+                        console.log( util.format('(%s) Room %s updated to "%s"', response.statusCode, room.id, room.name) );
+                });
+        },
+        'delete': function(room) {
+                room_template = {
+                        data: {
+                                'id': room.id,
+                        },
+                        headers: { 'Content-Type': 'application/json' }
+                };
+                client.delete('http://localhost:8000/api/rooms/', room_template, function(data,response) {
+                        console.log( util.format('(%s) Room %s was deleted', response.statusCode, room.id) );
+                });
+        }
+}
+
 
 var msg_endpoint = 'http://127.0.0.1:8000/api/messages/'
 

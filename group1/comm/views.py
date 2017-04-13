@@ -26,6 +26,16 @@ class UserViewSet(viewsets.ModelViewSet):
 class RoomViewSet(viewsets.ModelViewSet):
 	queryset = Room.objects.all()
 	serializer_class = RoomSerializer
+	def put(self, request):
+		id = int(request.data.get("id", "0"))
+		name = request.data.get("name", "0")
+		room = Room.objects.get(pk=id)
+		room.name = name
+		room.save()
+	def delete(self, request):
+		id = int(request.data.get("id", "0"))
+		room = Room.objects.get(pk=id)
+		room.delete()
 
 # Filters the Message model based on user and room, 
 #url: 127.0.0.1:8000/api/messages/? (user=id | room=id | user=id & room=id)

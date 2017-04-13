@@ -36,23 +36,13 @@ The output describes how the test failed, along with the stacktrace (called 'Tra
 It will be your responsibility for running the test suite and fixing all broken tests before check-in, as well as when the branch is merged into the development branch.
 
 ## Location of Test suites
-Tests should be written near the feature they are testing. Currently, we have test suites in the following locations:
-* group1/communication/tests
-* group1/functional_tests
-* issue_tracker/tests
-* project_router/tests
-* requirements/tests
+Tests should be written near the feature they are testing. Currently, the test suite is divided into two (2) Test Suites:
+* selenium_tests
+* unit_tests
 
 ## Writing Tests
-In order to write a test for a feature, locate the test suite that represents the "area of concern". For instance, if you are working on the communication tool, you would look for the test suite in **group1/communication/tests**.
+In order to write a test for a feature, locate the test suite that represents the "area of concern". For instance, if you are working on the communication tool, you would look for the test suite in **unit_tests/chat**.
 
-Once you have located the test suite, survey the test file to get a sense for how the tests are organized. Generally, tests within a test suite will be organized within "test classes" that are concerned with a specific area of the code. For instance, in **group1/communication/tests/tests.py**, we see at least 4 (four) different Test Classes:
-* TestInfrastructure -- tests for basic infrastructure
-* TestAPI            -- tests for API's to the Django app
-* TestSocketIO       -- tests for the API's to the SocketIO-based Chat tool
-* SeleniumTests      -- browser-based tests, using the Selenium WebDriver
-
-If you are writing a test for a new, or existing API within the Django app, then you would add the test to the TestAPI class.
 
 If you find that none of the Test Classes really describe the code you are trying to test, create a new Test Class following the conventions that already exist within the test file.
 

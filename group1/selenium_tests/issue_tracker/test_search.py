@@ -53,10 +53,6 @@ class SearchIssuesTestCase(base_testcase.CommonLiveServerTestCase):
         self.pause()
         assert self.driver.current_url == destination
 
-    @unittest.skip('Currently this is broken, when we have validation setup on'
-                   ' this page we will fix the test')
-    def test_search_empty_forms(self):
-        return
 
     def test_search_multiple_fields(self):
         self.create_testable_issue()

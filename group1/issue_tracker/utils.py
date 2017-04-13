@@ -112,8 +112,6 @@ def create_user(first, last, username, out_handle=None):
                                         **{'first_name': first,
                                            'last_name': last})
         user.save()
-
-        print user
     except Exception as e:
       print e
     except IntegrityError as e:
@@ -156,7 +154,6 @@ def create_super_user(first, last, username, out_handle=None):
                                              **{'first_name': first,
                                                 'last_name': last})
         user.save()
-        print user.id
     except Exception as e:
         print e
     except IntegrityError as e:
@@ -293,7 +290,6 @@ def create_projects(number_of_projects, out_handle=None):
 
         if out_handle:
             out_handle.write('\n')
-        print ">>>> DONE projects"
     except Exception as e:
         print e
 

@@ -5,6 +5,7 @@ db.sqlite3
 *.pydevproject
 /org.eclipse.core.resources.prefs
 *.pyc
+database/*
 group1/group1/settings.py
 group1/requirements/migrations/*
 group1/issue_tracker/migrations/*
@@ -14,3 +15,5 @@ group1/comm/migrations/*
 venv/
 group1/communication/node/node_modules/*
 *.orig
+*.sqlite3
+geckodriver.log
