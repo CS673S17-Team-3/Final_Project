@@ -31,6 +31,14 @@ class SignUpForm(UserCreationForm):
             raise forms.ValidationError('Your password must be at least 8 characters long and must '
             'contain at least one uppercase letter, one lowercase letter, and one number.')
 
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        # ensure that the user is signing up with a BU email account
+        email_test = re.match(r'^[A-Za-z0-9\.\+_-]+@bu\.edu$', email)
+        if not email_test:
+            raise forms.ValidationError('You must register with a BU email acocunt to use this site.')
+        return self.cleaned_data.get("email")     
+
     class Meta:
         model = User
         fields = (

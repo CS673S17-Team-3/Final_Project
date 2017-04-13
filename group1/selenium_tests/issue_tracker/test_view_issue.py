@@ -1,5 +1,5 @@
 from selenium.webdriver.common.keys import Keys
-from app.tests import base_testcase
+import base_testcase
 
 
 class ViewIssueTestCase(base_testcase.CommonLiveServerTestCase):
@@ -10,12 +10,12 @@ class ViewIssueTestCase(base_testcase.CommonLiveServerTestCase):
         # creating dynamically, but there's a better way to do this when we
         # have time using mocks or a script
 
-        self.driver.get('localhost:8081/issue/create')
-        self.driver.find_element_by_id('id_username').send_keys(
+        self.driver.get('http://127.0.0.1:8000/issue_tracker/issue/create')
+        self.driver.find_element_by_id('username').send_keys(
             self.super_user_name)
-        self.driver.find_element_by_id('id_password').send_keys(
+        self.driver.find_element_by_id('password').send_keys(
             self.super_user_pw)
-        self.driver.find_element_by_id('id_password').send_keys(Keys.ENTER)
+        self.driver.find_element_by_id('password').send_keys(Keys.ENTER)
         self.pause()
         self.driver.find_element_by_xpath(
             '//*[@id="id_project"]/option[2]').click()
@@ -34,10 +34,10 @@ class ViewIssueTestCase(base_testcase.CommonLiveServerTestCase):
         # The above code just creates an issue, the following is where
         # our test begins
 
-        self.driver.get('localhost:8081')
+        self.driver.get('http://127.0.0.1:8000/issue_tracker')
         self.pause()
         first_issue = self.driver.find_element_by_css_selector(
-            '#page-wrapper > table:nth-child(3) > tbody:nth-child(2) > '
+            '#page-wrapper > table:nth-child(2) > tbody:nth-child(2) > '
             'tr:nth-child(1) > td:nth-child(2) > a:nth-child(1)')
         first_issue.click()
         self.pause()
