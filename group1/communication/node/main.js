@@ -85,6 +85,10 @@ global_namespace.on('connection', function(socket){
                 rooms.delete(room);
                 global_namespace.emit('deleteroom', room);
         });
+
+        socket.on('userroom', function(userroom){
+                userroom.save(userroom);
+        });
 });
 
 
@@ -180,6 +184,23 @@ var rooms = {
                         console.log( util.format('(%s) Room %s was deleted', response.statusCode, room.id) );
                 });
         }
+}
+
+var userroom = {
+    'save': function(userroom_data) {
+        userroom_template = {
+                        data: {
+                                'user': util.format('http://localhost:8000/api/users/%s/', userroom_data.user),,
+                                'creator': util.format('http://localhost:8000/api/users/%s/', creator_id),
+                                'description': desc,
+                                'public': pub,
+                        },
+                        headers: { 'Content-Type': 'application/json' }
+                };
+                client.put('http://localhost:8000/api/userroom/', userroom_template, function(data,response) {
+                        console.log( util.format('(%s) Room %s updated to "%s"', response.statusCode, data.id, data.room, data.user) );
+                });
+    }
 }
 
 

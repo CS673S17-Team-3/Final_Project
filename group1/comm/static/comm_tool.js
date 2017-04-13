@@ -506,3 +506,12 @@ function deleteTeamFunc() {
     return false;
   }
 }
+
+function insertUserRoom(userid, roomid) {
+  var userroom_data = {
+    user:userid,
+    room:roomid
+  };
+
+  global.emit('userroom', userroom_data);
+}
