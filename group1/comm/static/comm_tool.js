@@ -1,7 +1,6 @@
 String.prototype.splice = function( idx, rem, s ) {
     return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
 };
-
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -18,6 +17,7 @@ function getCookie(name) {
 }
 
 function createteam(){
+  alert("click!");
   //Show modal to create team
   $("#deleteButton").remove();
   $("#myModal").modal('show');
@@ -114,6 +114,7 @@ global.emit('user', {
 global.on('room', function(room) {
 	add_new_room(room);
   switch_room('room-' + room.id);
+  alert("switching: " + room.id);
 });
 
 global.on('updateroom', function(room) {

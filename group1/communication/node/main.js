@@ -85,7 +85,6 @@ global_namespace.on('connection', function(socket){
                 rooms.delete(room);
                 global_namespace.emit('deleteroom', room);
         });
-
         socket.on('userroom', function(userroom){
                 userroom.save(userroom);
         });
@@ -190,7 +189,7 @@ var userroom = {
     'save': function(userroom_data) {
         userroom_template = {
                         data: {
-                                'user': util.format('http://localhost:8000/api/users/%s/', userroom_data.user),,
+                                'user': util.format('http://localhost:8000/api/users/%s/', userroom_data.user),
                                 'creator': util.format('http://localhost:8000/api/users/%s/', creator_id),
                                 'description': desc,
                                 'public': pub,
