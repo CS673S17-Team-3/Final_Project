@@ -44,7 +44,7 @@ $ pip install -r requirements.txt
 Create the database:
 
 ```
-$ mkdir ./group1/database
+$ mkdir Final_Project/database
 $ python manage.py makemigrations
 $ python manage.py migrate
 ```
