@@ -111,7 +111,7 @@ global.emit('user', {
 });
 
 global.on('room', function(room) {
-	add_new_room(room);
+  add_new_room(room);
   switch_room('room-' + room.id);
 });
 
@@ -240,7 +240,7 @@ $(document).ready(function(){
             if(e.which == 13) {
                 display();
             }
-	});
+  });
 });
 
 var mobile_nav = {
@@ -282,30 +282,36 @@ function switch_room(target_room){
 
 }
 
+// get message for specific room
+// @param - room_id
 function get_message_data(room_id) {
 
-    var message_endpoint = 'http://' + server_host + ':' + server_port + '/api/messages/?format=json';
+    var message_endpoint = 'http://' + server_host + ':' + server_port + '/api/messages/?room=' + room_id
+    + '&' + 'format=json';
     $.getJSON(message_endpoint, function(data){
       data.forEach(function(msg){
+        console.log("Message: " + msg.text);
+
         message_room = Number(msg.room.split('/api/rooms/')[1].slice(0,-1));
         var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
         message_text = message_text.splice(0,0,'<b>');
-        if (message_room === room_id) { add_message(message_text, room_id) };
+        add_message(message_text, room_id) ;
       });
     });
-
 }
 
+
+// load all the room names for the user
 function populate_room_list() {
 
   $.getJSON('http://' + server_host + ':' + server_port + '/api/rooms/?format=json', function(data) {
     // global_room_list = data;
     data.forEach(function(room) {
       add_new_room(room);
-      get_message_data(room.id);
     });
 
     switch_room('room-' + global_room_list[0].id);
+    get_message_data(global_room_list[0].id); // load messages for the first room
 
   });
 }
@@ -402,11 +408,21 @@ $(document).ready(function(){
   populate_room_list();
   populate_user_list();
 
+// switch and load messages on click on the room name
   $('div#room-list').on('click', 'a', function(){
     if ($(this).attr('id') != 'create-room' ) {
+      var id = $(this).attr('id').split("-");
+      console.log("id: " + id[1]);
+      clearMessage();
       switch_room( $(this).attr('id') );
+      get_message_data(id[1]); // load messages for the room
     }
   });
+
+  // clear all messages
+  function clearMessage(){
+    $(".messagecontent p").remove();
+  }
 
   mobile_nav.sidebar();
 
