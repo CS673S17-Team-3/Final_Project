@@ -17,7 +17,6 @@ function getCookie(name) {
 }
 
 function createteam(){
-  alert("click!");
   //Show modal to create team
   $("#deleteButton").remove();
   $("#myModal").modal('show');
@@ -114,7 +113,6 @@ global.emit('user', {
 global.on('room', function(room) {
 	add_new_room(room);
   switch_room('room-' + room.id);
-  alert("switching: " + room.id);
 });
 
 global.on('updateroom', function(room) {
