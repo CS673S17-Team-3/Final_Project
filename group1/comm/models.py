@@ -17,7 +17,9 @@ class Room(models.Model):
 	#users = models.ManyToManyField(User)
 
 class Message(models.Model):
-
+	"""
+	Encapsulates a message sent by a user.
+	"""
 	def __str__(self):
 		return '%s - %s' % (self.user, self.text)
 
