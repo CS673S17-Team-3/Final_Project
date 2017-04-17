@@ -364,7 +364,7 @@ function populate_user_list() {
         })
 
         $('ul.user_list').append(user_link);
-        $('user_list li:before').append(color_aqua);
+      //  $('user_list li:before').append(color_aqua);
 
       });
     });
