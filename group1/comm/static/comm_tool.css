@@ -358,14 +358,6 @@ div.messagecontent span.msg:hover span.msgoptions{
   display: block;
 }
 
-/*div.messagecontent p:hover {
-  background-color: #f3fdff;
-}*/
-
-/*div.messagecontent p:hover + span.msgoptions{
-  display: block;
-}*/
-
 span.msgoptions {
   padding: 5px;
   position: absolute;
