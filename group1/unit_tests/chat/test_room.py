@@ -4,39 +4,52 @@ from datetime import datetime
 from django.contrib.auth.models import User
 
 class MessageLengthTest(TestCase):
-	def setUp(self):
-		#set up group and User test
-		Room.objects.create(name="test", description="maxLength")
-		testRoom=Room.objects.get(name = "test")
-
-		User.objects.create(password = "1234", last_login = "2017-02-12 21:36:33.211421", is_superuser = 1, username = "test", first_name = "", last_name = "", email = "test1@bu.edu", is_staff = 1, is_active = 1, date_joined = "2017-02-12 21:36:33.211421")
+    def setUp(self):
+        #set up group and User test
+        User.objects.create(password = "1234", last_login = "2017-02-12 21:36:33.211421", is_superuser = 1, username = "test", first_name = "", last_name = "", email = "test1@bu.edu", is_staff = 1, is_active = 1, date_joined = "2017-02-12 21:36:33.211421")
+        user = User.objects.get(id = 1)
+        Room.objects.create(name="test", creator = user, description="maxLength")
 
 #test
-	def test_add_char(self):
-		message = ""
-		for i in range(0,100000000):
-			message += "a"
+    def test_add_char(self):
+        room = Room.objects.get(name = "test")
+        user = User.objects.get(id = 1)
 
-		Message.objects.create(text = message, time = datetime.now().time(), at_message = 0, room = Room.objects.get(name = "test"), user = User.objects.get(id=1) )
-		self.assertEqual(Message.objects.count(),1)
+        message = ""
+        for i in range(0,1000):
+            message += "a"
+        Message.objects.create(text = message, time = datetime.now().time(), room = room, user = user, at_message = False)
+		
+        self.assertEqual(Message.objects.count(), 1)
+
+        message = ""
+        for i in range(0, 1100):
+            message += "a"
+        
+        with self.assertRaises(Exception) as context:
+            Message.objects.create(text = message, time = datetime.now().time(), room = room, user = user, at_message = False)
+
+        self.assertTrue("Message is too long" in context.exception)
+        
+
 
 
 # Create your tests here.
 class RoomTestCase(TestCase):
     def setUp(self):
     	#Create room and user objects
-        Room.objects.create(name = "test1", description = "test1")
-        room1 = Room.objects.get(name = "test1")
-        Room.objects.create(name = "test2", description = "test2")
-        room2 = Room.objects.get(name = "test2")
-
         User.objects.create(password = "test1", last_login = "2017-02-12 21:36:33.211421", is_superuser = 1, username = "test1", first_name = "", last_name = "", email = "test1@bu.edu", is_staff = 1, is_active = 1, date_joined = "2017-02-12 21:36:33.211421")
         user = User.objects.get(id = 1);
 
+        Room.objects.create(name = "test1", creator = user, description = "test1")
+        room1 = Room.objects.get(name = "test1")
+        Room.objects.create(name = "test2", creator = user, description = "test2")
+        room2 = Room.objects.get(name = "test2")
+
         #Add 5,100 messages from each room
         for num in range(0, 5100):
-            Message.objects.create(text = num, time = datetime.now().time(), room = room1, user = user, at_message = False)
-            Message.objects.create(text = num, time = datetime.now().time(), room = room2, user = user, at_message = False)
+            Message.objects.create(text = str(num), time = datetime.now().time(), room = room1, user = user, at_message = False)
+            Message.objects.create(text = str(num), time = datetime.now().time(), room = room2, user = user, at_message = False)
 
     def test_count_equal_5000(self):
         room1 = Room.objects.get(name = "test1")

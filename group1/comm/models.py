@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import sys
 
 # Need to add user relationship for second iteration
 class Room(models.Model):
@@ -54,4 +55,4 @@ from django.db.models.signals import pre_save
 def prevent_maxChar(sender, instance, **kwargs):
 	message = instance.text
 	if len(message)>1050:
-		sys.exit()
+		raise Exception("Message is too long")

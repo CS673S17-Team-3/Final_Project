@@ -58,3 +58,9 @@ class RoomFunctions(base_testcase.CommonLiveServerTestCase):
 			self.assertFalse(self.driver.find_element_by_id('room-1').is_displayed())
 		except:
 			return True
+
+	def test_switch_rooms(self):
+		self.create_rooms()
+		self.driver.find_element_by_link_text('Test').click()
+		self.pause(1)
+		assert "Test" in self.driver.find_element_by_id('room_title').text
