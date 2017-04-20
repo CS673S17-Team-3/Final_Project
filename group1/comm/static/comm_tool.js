@@ -322,10 +322,7 @@ function add_new_room(room) {
         'id': 'room-' + room.id,
         'class': 'list-group-item room-link'
       })
-      //.append( $('<span />', {
-      //  'class': 'glyphicon glyphicon-comment padded-icon', //removed append
-      //  'aria-hidden': true
-      //}))
+
       .append(room.name)
       .append( $('<span />',{
         'class': 'badge'

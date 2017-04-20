@@ -187,21 +187,6 @@ var rooms = {
         }
 }
 
-/*var userroom = {
-    'save': function(userroom_data) {
-        userroom_template = {
-                        data: {
-                                'room_id': userroom_data.room,
-                                'user_id':  userroom_data.user,
-                        },
-                        headers: { 'Content-Type': 'application/json' }
-                };
-                console.log("data room: %s data user: %s", userroom_data.room, userroom_data.user);
-                client.post('http://localhost:8000/api/roomuser/', userroom_template, function(data,response) {
-                        console.log( util.format('(%s) Room user %s updated to "%s"!!! %s', response.statusCode, data.id, data.room_id, data.user_id) );
-                });
-    }
-}*/
 var userroom = {    
     'save': function(userroom_data) {        
         userroom_template = {                        
