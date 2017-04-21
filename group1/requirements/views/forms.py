@@ -30,6 +30,7 @@ class SignUpForm(UserCreationForm):
         if not password_test:
             raise forms.ValidationError('Your password must be at least 8 characters long and must '
             'contain at least one uppercase letter, one lowercase letter, and one number.')
+        return self.cleaned_data.get("password1")
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -51,7 +52,7 @@ class SignUpForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(SignUpForm, self).save(commit=False)
-        user.is_active = False
+        user.is_active = True # should be false once email validation is finished 
         if commit:
             user.save()
         return user
