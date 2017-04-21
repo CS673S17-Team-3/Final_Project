@@ -43,6 +43,15 @@ class RoomFunctions(base_testcase.CommonLiveServerTestCase):
 		alert.accept()
 		self.pause()
 
+	def unable_edit_room(self):
+		self.log_in();
+
+		self.driver.find_element_by_link_text('Test2').click()
+		self.driver.find_element_by_id('dropdownMenu1').click()
+		self.pause(1)
+		self.driver.find_element_by_link_text('Edit Team').click()
+		self.pause(2)
+
 	def test_create_room(self):
 		self.create_rooms()
 		self.assertTrue(self.driver.find_element_by_link_text('Newer Team').is_displayed())
@@ -64,3 +73,11 @@ class RoomFunctions(base_testcase.CommonLiveServerTestCase):
 		self.driver.find_element_by_link_text('Test').click()
 		self.pause(1)
 		assert "Test" in self.driver.find_element_by_id('room_title').text
+
+	def test_unable_edit_room(self):
+		self.unable_edit_room()
+
+		try:
+			self.assertFalse(self.driver.find_element_by_id('myModal').is_displayed())
+		except:
+			return True

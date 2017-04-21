@@ -1,5 +1,5 @@
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.actions_chains import ActionChains
+from selenium.webdriver.common.action_chains import ActionChains
 import base_testcase
 
 class MessageFunctions(base_testcase.CommonLiveServerTestCase):
@@ -8,6 +8,14 @@ class MessageFunctions(base_testcase.CommonLiveServerTestCase):
 		self.log_in()
 
 		self.driver.find_element_by_id('text').send_keys('Hi there')
+		self.driver.find_element_by_id('text').send_keys(Keys.ENTER)
+		self.pause(2)
+
+		message = ""
+		for num in range(1, 1050):
+			message += "a"
+
+		self.driver.find_element_by_id('text').send_keys(message)
 		self.driver.find_element_by_id('text').send_keys(Keys.ENTER)
 		self.pause(2)
 
@@ -52,6 +60,8 @@ class MessageFunctions(base_testcase.CommonLiveServerTestCase):
 	def test_sent_message(self):
 		self.send_message()
 		self.assertTrue(self.driver.find_element_by_xpath("//div[@id='room-1']/p[2]").is_displayed())
+		thirdmessage = self.driver.find_element_by_xpath("//div[@id='room-1']/p[3]").text
+		self.assertTrue(len(thirdmessage) < 1050)
 
 	def test_sent_emoticon(self):
 		self.send_emoticon()

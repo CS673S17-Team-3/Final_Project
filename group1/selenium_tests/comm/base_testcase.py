@@ -19,14 +19,23 @@ class CommonLiveServerTestCase(StaticLiveServerTestCase):
 		self.driver.implicitly_wait(5)
 		self.user_name = 'test'
 		self.user_pw = 'Password123'
-		user = User.objects.create_superuser(self.user_name, email='%s@bu.edu' % self.user_name, password=self.user_pw, **{'first_name': 'Frodo', 'last_name': 'Baggins'})
-		user.save()
+		user1 = User.objects.create_superuser(self.user_name, email='%s@bu.edu' % self.user_name, password=self.user_pw, **{'first_name': 'Frodo', 'last_name': 'Baggins'})
+		user1.save()
 
-		room = Room.objects.create(name="Test", description="maxLength", creator=user)
-		room.save()
+		user2 = User.objects.create_superuser('test2', email='test2@bu.edu', password=self.user_pw, **{'first_name': 'Samus', 'last_name': 'Aran'})
+		user2.save()
 
-		message = Message.objects.create(text = "test: Hello", time = datetime.now().time(), room = room, user = user, at_message = False)
-		message.save()
+		room1 = Room.objects.create(name="Test", description="maxLength", creator=user1)
+		room1.save()
+
+		room2 = Room.objects.create(name="Test2", description="maxLength", creator=user2)
+		room2.save()
+
+		message1 = Message.objects.create(text = "test: Hello", time = datetime.now().time(), room = room1, user = user1, at_message = False)
+		message1.save()
+
+		message2 = Message.objects.create(text = "test2: Hi", time = datetime.now().time(), room = room1, user = user2, at_message = False)
+		message2.save()
 
 	def log_in(self):
 		self.driver.get('http://127.0.0.1:8000/communication/')
@@ -43,6 +52,8 @@ class CommonLiveServerTestCase(StaticLiveServerTestCase):
 	def tearDown(self):
 		self.driver.quit()
 		User.objects.all().delete()
+		Room.objects.all().delete()
+		Message.objects.all().delete()
 
 	def pause(self, seconds=None):
 		"""Time to pause between clicks.
