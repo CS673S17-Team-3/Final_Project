@@ -146,6 +146,19 @@ global.on('deleteroom', function(room) {
   switch_room('room-' + global_room_list[0].id);
 });
 
+global.on('editmsg', function(msg) {
+  //Make username bold
+  var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
+  message_text = message_text.splice(0,0,'<b>');
+  //Change message text
+  $("p#message-" + msg.id).html(message_text);
+});
+
+global.on('deletemsg', function(msgid){
+  //Remove span element that contains message
+  $("p#message-" + msgid).parent().remove();
+});
+
 function createTeamFunc() {
 
     var new_team_name = $('input#teamname').val();
@@ -187,8 +200,12 @@ function add_socket(room) {
       if (room.id != visible_namespace()) {
         increment_badge(room.id);
       }
-      add_message('<b>' + msg.username + '</b>: ' + msg.value, room.id);
+      var message_user = Number(msg.user.split('/api/users/')[1].slice(0,-1));
+      var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
+      message_text = message_text.splice(0,0,'<b>');
+      add_message(message_text, msg.id, message_user, room.id);
     });
+
     sockets[room.id] = socket;
 }
 
@@ -198,8 +215,14 @@ function increment_badge(room_id){
   badge.text(count += 1);
 }
 
-function add_message(msg, target) {
-  $('div#room-' + target).append('<p>' + msg + '</p>'); //changed from <br> after to contained in <p>
+function add_message(msg, msgid, msguser, target) {
+  //Check if user is the person who sent message. Show different options depending on result.
+  //The p element contains the actual message, and each of them have the id "message-" followed by the message id
+  if (msguser == user_id) {
+    $('div#room-' + target).append('<span class="msg"><p id="message-' + msgid + '">' + msg + '</p><span class="msgoptions"><img src="/static/emoji/happy.jpg" style="width:15px;height:15px;margin-right:5px;">...</span><ul class="msgmenu"><li onclick="showEditMessage(' + msgid + ')">edit</li><li onclick="deleteMessage(' + msgid + ')" class="red">delete</li></ul></span>');
+  } else {
+    $('div#room-' + target).append('<span class="msg"><p id="message-' + msgid + '">' + msg + '</p><span class="msgoptions"><img src="/static/emoji/happy.jpg" style="width:15px;height:15px;margin-right:5px;">...</span></span>');
+  }
   //add emoji to message content
   var emoji_string=Object.getOwnPropertyNames(emoji_image);
   if (msg.indexOf('::') != -1) {
@@ -289,9 +312,10 @@ function get_message_data(room_id) {
     $.getJSON(message_endpoint, function(data){
       data.forEach(function(msg){
         message_room = Number(msg.room.split('/api/rooms/')[1].slice(0,-1));
+        var message_user = Number(msg.user.split('/api/users/')[1].slice(0,-1));
         var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
         message_text = message_text.splice(0,0,'<b>');
-        if (message_room === room_id) { add_message(message_text, room_id) };
+        if (message_room === room_id) { add_message(message_text, msg.id, message_user, room_id) };
       });
     });
 
@@ -502,6 +526,51 @@ function editTeamFunc() {
 function deleteTeamFunc() {
   if (confirm('Are you sure you would like to delete this team?')) {  
     global.emit('deleteroom', curroom);
+  } else {
+    return false;
+  }
+}
+
+function showEditMessage(msgid) {
+  var prevmsg = $("p#message-" + msgid).text(); //Remember previous message
+  var usr = prevmsg.slice(0, prevmsg.indexOf(":")); //Extract username from message
+  var msg = prevmsg.slice(prevmsg.indexOf(":") + 2); //Extract text from previous message
+  //Replace html inside p element with an input
+  $("p#message-" + msgid).html("<b>" + usr + "</b>: <input id='edit-" + msgid + "' type='text' value='" + msg + "' style='width: 80%;' required>");
+
+  $("input#edit-" + msgid).focus();//Automatically focus that input
+
+  $("input#edit-" + msgid).keypress(function(e) {
+    if(e.which == 13) {
+      //When user hit enter:
+      var newtext = usr + ": " + $("input#edit-" + msgid).val(); //New message text
+      if (newtext != prevmsg) {
+        editMessage(msgid, newtext);//Function to emit event
+      } else {
+        $("p#message-" + msgid).html("<b>" + usr + "</b>: " + msg);//Nothing changed so revert back
+      }
+    }
+  });
+
+  $("input#edit-" + msgid).focusout(function() {
+    //If user clicks out, remove input and revert back to original view
+    $("p#message-" + msgid).html("<b>" + usr + "</b>: " + msg);
+  });
+}
+
+function editMessage(msgid, msgtext) {
+  //Use message id and new message text to emit update event
+  var message_data = {
+    id: msgid,
+    text: msgtext
+  }
+  global.emit('editmsg', message_data);
+}
+
+function deleteMessage(msgid) {
+  //Use message id to delete
+  if (confirm('Are you sure you would like to delete this message?')) {
+    global.emit('deletemsg', msgid);
   } else {
     return false;
   }
