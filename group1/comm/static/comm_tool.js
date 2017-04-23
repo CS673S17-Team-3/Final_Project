@@ -196,6 +196,9 @@ $.getJSON('http://' + server_host + ':' + server_port + '/api/rooms/',function(d
 function add_socket(room) {
     var socket = io(base_url + room.id);
     socket.on('msg', function(msg) {
+      if (msg.already_sent === true) {
+          return;
+      }
       if (room.id != visible_namespace()) {
         increment_badge(room.id);
       }
@@ -203,6 +206,7 @@ function add_socket(room) {
       var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
       message_text = message_text.splice(0,0,'<b>');
       add_message(message_text, msg.id, message_user, room.id);
+      msg.already_sent = true;
     });
 
     sockets[room.id] = socket;
@@ -249,7 +253,8 @@ function display() {
   var message = {
     'username': user,
     'value': $('input#text').val(),
-    'user_id': user_id
+    'user_id': user_id,
+    'already_sent': false
   };
   sockets[visible_namespace()].emit('msg', message);
   $('input#text').val('');
