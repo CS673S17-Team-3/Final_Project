@@ -85,6 +85,9 @@ global_namespace.on('connection', function(socket){
                 rooms.delete(room);
                 global_namespace.emit('deleteroom', room);
         });
+
+        socket.on('userroom', function(userroom){
+                userroom.save(userroom);
         socket.on('editmsg', function(msg) {
             messages.update(msg);
         });
@@ -180,9 +183,11 @@ var rooms = {
                         headers: { 'Content-Type': 'application/json' }
                 };
                 client.post('http://localhost:8000/api/rooms/', room_template, function(data,response) {
-                        console.log( util.format('(%s) Room %s created by user "%s"', response.statusCode, name, creator_id) );
+                        console.log( util.format('(%s) Room %s created by user "%s" with room id %s', response.statusCode, name, creator_id, data.id) );
+
                         add_new_namespace(data);
                         global_namespace.emit('room', data);
+                        userroom.save({room: data.id, user: creator_id});
                 });
         },
         'update': function(room) {
@@ -213,6 +218,20 @@ var rooms = {
         }
 }
 
+var userroom = {    
+    'save': function(userroom_data) {        
+        userroom_template = {                        
+            data: {           
+                'user': util.format('http://localhost:8000/api/users/%s/', userroom_data.user),
+                'room': util.format('http://localhost:8000/api/rooms/%s/', userroom_data.room)
+            },                        
+            headers: { 'Content-Type': 'application/json' }                
+        };                
+        client.post('http://localhost:8000/api/roomuser/', userroom_template, function(data,response) {                        
+            console.log(util.format('(%s) User %s has joined Room "%s"', response.statusCode, data.user, data.room) );
+        });                
+    }
+}
 
 var msg_endpoint = 'http://127.0.0.1:8000/api/messages/'
 
