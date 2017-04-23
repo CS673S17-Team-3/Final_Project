@@ -59,6 +59,7 @@ var client = new Client();
 var users = [];
 
 var global_namespace = io.of('/');
+
 global_namespace.on('connection', function(socket){
         var user;
         socket.on('user', function(msg) { 
@@ -86,8 +87,10 @@ global_namespace.on('connection', function(socket){
                 global_namespace.emit('deleteroom', room);
         });
 
-        socket.on('userroom', function(userroom){
+        socket.on('userroom', function(userroom) {
                 userroom.save(userroom);
+        });
+
         socket.on('editmsg', function(msg) {
             messages.update(msg);
         });
@@ -106,7 +109,7 @@ app.get('/users', function(req,res){
 
 var room_url = 'http://localhost:8000/api/rooms/?format=json';
 
-namespaces = {}
+namespaces = {};
 
 function add_new_namespace(room) {
   namespaces[room.id] = io.of(util.format('/%s', room.id))
@@ -231,9 +234,10 @@ var userroom = {
             console.log(util.format('(%s) User %s has joined Room "%s"', response.statusCode, data.user, data.room) );
         });                
     }
-}
+};
 
-var msg_endpoint = 'http://127.0.0.1:8000/api/messages/'
+
+var msg_endpoint = 'http://127.0.0.1:8000/api/messages/';
 
 var message_template = {
         "data": {
