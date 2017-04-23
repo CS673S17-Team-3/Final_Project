@@ -319,7 +319,7 @@ function get_message_data(room_id) {
         var message_user = Number(msg.user.split('/api/users/')[1].slice(0,-1));
         var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
         message_text = message_text.splice(0,0,'<b>');
-        add_message(message_text, room_id) ;
+        add_message(message_text, msg.id, message_user, room_id) ;
       });
     });
 }
