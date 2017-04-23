@@ -1,6 +1,6 @@
 // Express and SocketIO boilerplate
 var app = require('express')();
-var morgan = require('morgan')
+var morgan = require('morgan');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Client = require('node-rest-client').Client;
@@ -12,7 +12,7 @@ var fs = require('fs-extra');
 var crypto = require('crypto');
 var path = require('path');
 
-app.use(morgan('combined'))
+app.use(morgan('combined'));
 
 // Add CORS headers to all express requests
 app.all('/*', function(req, res, next) {
@@ -169,7 +169,7 @@ var messages = {
                         console.log( util.format('(%s) Message %s deleted', response.statusCode, msgid) );
                 });
         }
-}
+};
 
 var rooms = {
         'save': function(name, creator_id, desc, pub) {
@@ -216,7 +216,7 @@ var rooms = {
                         console.log( util.format('(%s) Room %s was deleted', response.statusCode, room.id) );
                 });
         }
-}
+};
 
 var userroom = {    
     'save': function(userroom_data) {        
@@ -242,7 +242,7 @@ var message_template = {
         "user": "http://localhost:8000/api/users/1/"
         },
         "headers": { "Content-Type": "application/json" }
-}
+};
 
 // WebSocket stuff
 io.on('connection', function(socket) {
