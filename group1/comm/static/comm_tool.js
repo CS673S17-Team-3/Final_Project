@@ -16,6 +16,14 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function scroll_messages_into_view() {
+    if ($('span.msg p').length > 0) {
+        var last_message_idx = $('span.msg p').length - 1;
+        var last_msg_id = $('span.msg p')[last_message_idx].id;
+        document.getElementById(last_msg_id).scrollIntoView();
+    }
+}
+
 function createteam(){
   //Show modal to create team
   $("#deleteButton").remove();
@@ -207,6 +215,12 @@ function add_socket(room) {
       message_text = message_text.splice(0,0,'<b>');
       add_message(message_text, msg.id, message_user, room.id);
       msg.already_sent = true;
+        
+      if ($('span.msg p').length > 0) {
+          var last_message_idx = $('span.msg p').length - 1;
+          var last_msg_id = $('span.msg p')[last_message_idx].id;
+          document.getElementById(last_msg_id).scrollIntoView();
+      }
     });
 
     sockets[room.id] = socket;
