@@ -1,7 +1,6 @@
 String.prototype.splice = function( idx, rem, s ) {
     return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
 };
-
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -112,7 +111,7 @@ global.emit('user', {
 });
 
 global.on('room', function(room) {
-	add_new_room(room);
+  add_new_room(room);
   switch_room('room-' + room.id);
 });
 
@@ -144,6 +143,19 @@ global.on('deleteroom', function(room) {
   }
   $("#myModal").modal('hide');
   switch_room('room-' + global_room_list[0].id);
+});
+
+global.on('editmsg', function(msg) {
+  //Make username bold
+  var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
+  message_text = message_text.splice(0,0,'<b>');
+  //Change message text
+  $("p#message-" + msg.id).html(message_text);
+});
+
+global.on('deletemsg', function(msgid){
+  //Remove span element that contains message
+  $("p#message-" + msgid).parent().remove();
 });
 
 function createTeamFunc() {
@@ -187,8 +199,12 @@ function add_socket(room) {
       if (room.id != visible_namespace()) {
         increment_badge(room.id);
       }
-      add_message('<b>' + msg.username + '</b>: ' + msg.value, room.id);
+      var message_user = Number(msg.user.split('/api/users/')[1].slice(0,-1));
+      var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
+      message_text = message_text.splice(0,0,'<b>');
+      add_message(message_text, msg.id, message_user, room.id);
     });
+
     sockets[room.id] = socket;
 }
 
@@ -198,8 +214,14 @@ function increment_badge(room_id){
   badge.text(count += 1);
 }
 
-function add_message(msg, target) {
-  $('div#room-' + target).append('<p>' + msg + '</p>'); //changed from <br> after to contained in <p>
+function add_message(msg, msgid, msguser, target) {
+  //Check if user is the person who sent message. Show different options depending on result.
+  //The p element contains the actual message, and each of them have the id "message-" followed by the message id
+  if (msguser == user_id) {
+    $('div#room-' + target).append('<span class="msg"><p id="message-' + msgid + '">' + msg + '</p><span class="msgoptions"><img src="/static/emoji/happy.jpg" style="width:15px;height:15px;margin-right:5px;">...</span><ul class="msgmenu"><li onclick="showEditMessage(' + msgid + ')">edit</li><li onclick="deleteMessage(' + msgid + ')" class="red">delete</li></ul></span>');
+  } else {
+    $('div#room-' + target).append('<span class="msg"><p id="message-' + msgid + '">' + msg + '</p><span class="msgoptions"><img src="/static/emoji/happy.jpg" style="width:15px;height:15px;margin-right:5px;">...</span></span>');
+  }
   //add emoji to message content
   var emoji_string=Object.getOwnPropertyNames(emoji_image);
   if (msg.indexOf('::') != -1) {
@@ -241,7 +263,7 @@ $(document).ready(function(){
             if(e.which == 13) {
                 display();
             }
-	});
+  });
 });
 
 var mobile_nav = {
@@ -283,30 +305,37 @@ function switch_room(target_room){
 
 }
 
+// get message for specific room
+// @param - room_id
 function get_message_data(room_id) {
 
-    var message_endpoint = 'http://' + server_host + ':' + server_port + '/api/messages/?format=json';
+    var message_endpoint = 'http://' + server_host + ':' + server_port + '/api/messages/?room=' + room_id
+    + '&' + 'format=json';
     $.getJSON(message_endpoint, function(data){
       data.forEach(function(msg){
+        console.log("Message: " + msg.text);
+
         message_room = Number(msg.room.split('/api/rooms/')[1].slice(0,-1));
+        var message_user = Number(msg.user.split('/api/users/')[1].slice(0,-1));
         var message_text = msg.text.splice(msg.text.indexOf(':'),0,'</b>');
         message_text = message_text.splice(0,0,'<b>');
-        if (message_room === room_id) { add_message(message_text, room_id) };
+        add_message(message_text, room_id) ;
       });
     });
-
 }
 
+
+// load all the room names for the user
 function populate_room_list() {
 
   $.getJSON('http://' + server_host + ':' + server_port + '/api/rooms/?format=json', function(data) {
     // global_room_list = data;
     data.forEach(function(room) {
       add_new_room(room);
-      get_message_data(room.id);
     });
 
     switch_room('room-' + global_room_list[0].id);
+    get_message_data(global_room_list[0].id); // load messages for the first room
 
   });
 }
@@ -317,10 +346,7 @@ function add_new_room(room) {
         'id': 'room-' + room.id,
         'class': 'list-group-item room-link'
       })
-      //.append( $('<span />', {
-      //  'class': 'glyphicon glyphicon-comment padded-icon', //removed append
-      //  'aria-hidden': true
-      //}))
+
       .append(room.name)
       .append( $('<span />',{
         'class': 'badge'
@@ -364,7 +390,7 @@ function populate_user_list() {
         })
 
         $('ul.user_list').append(user_link);
-        $('user_list li:before').append(color_aqua);
+      //  $('user_list li:before').append(color_aqua);
 
       });
     });
@@ -403,11 +429,21 @@ $(document).ready(function(){
   populate_room_list();
   populate_user_list();
 
+// switch and load messages on click on the room name
   $('div#room-list').on('click', 'a', function(){
     if ($(this).attr('id') != 'create-room' ) {
+      var id = $(this).attr('id').split("-");
+      console.log("id: " + id[1]);
+      clearMessage();
       switch_room( $(this).attr('id') );
+      get_message_data(id[1]); // load messages for the room
     }
   });
+
+  // clear all messages
+  function clearMessage(){
+    $(".messagecontent p").remove();
+  }
 
   mobile_nav.sidebar();
 
@@ -502,6 +538,58 @@ function editTeamFunc() {
 function deleteTeamFunc() {
   if (confirm('Are you sure you would like to delete this team?')) {  
     global.emit('deleteroom', curroom);
+  } else {
+    return false;
+  }
+}
+
+function insertUserRoom(userid, roomid) {
+  var userroom_data = {
+    user:userid,
+    room:roomid
+  };
+
+  global.emit('userroom', userroom_data);
+function showEditMessage(msgid) {
+  var prevmsg = $("p#message-" + msgid).text(); //Remember previous message
+  var usr = prevmsg.slice(0, prevmsg.indexOf(":")); //Extract username from message
+  var msg = prevmsg.slice(prevmsg.indexOf(":") + 2); //Extract text from previous message
+  //Replace html inside p element with an input
+  $("p#message-" + msgid).html("<b>" + usr + "</b>: <input id='edit-" + msgid + "' type='text' value='" + msg + "' style='width: 80%;' required>");
+
+  $("input#edit-" + msgid).focus();//Automatically focus that input
+
+  $("input#edit-" + msgid).keypress(function(e) {
+    if(e.which == 13) {
+      //When user hit enter:
+      var newtext = usr + ": " + $("input#edit-" + msgid).val(); //New message text
+      if (newtext != prevmsg) {
+        editMessage(msgid, newtext);//Function to emit event
+      } else {
+        $("p#message-" + msgid).html("<b>" + usr + "</b>: " + msg);//Nothing changed so revert back
+      }
+    }
+  });
+
+  $("input#edit-" + msgid).focusout(function() {
+    //If user clicks out, remove input and revert back to original view
+    $("p#message-" + msgid).html("<b>" + usr + "</b>: " + msg);
+  });
+}
+
+function editMessage(msgid, msgtext) {
+  //Use message id and new message text to emit update event
+  var message_data = {
+    id: msgid,
+    text: msgtext
+  }
+  global.emit('editmsg', message_data);
+}
+
+function deleteMessage(msgid) {
+  //Use message id to delete
+  if (confirm('Are you sure you would like to delete this message?')) {
+    global.emit('deletemsg', msgid);
   } else {
     return false;
   }

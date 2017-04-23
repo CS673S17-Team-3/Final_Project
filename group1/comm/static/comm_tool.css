@@ -339,6 +339,79 @@ div.messagecontent {
   padding-bottom: 60px;    
 }
 
+div.messagecontent p {
+  margin:0;
+  padding: 5px 0;
+}
+
+div.messagecontent span.msg {
+  margin:0;
+  padding:0;
+  height: 28px;
+}
+
+div.messagecontent span.msg:hover p {
+  background-color: #f3fdff;
+}
+
+div.messagecontent span.msg:hover span.msgoptions{
+  display: block;
+}
+
+span.msgoptions {
+  padding: 5px;
+  position: absolute;
+  right: 15px;
+  transform: translate(0px, -30px);
+  cursor: pointer;
+  display: none;
+  color:#737373;
+  font-weight: bold;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+span.msgoptions:hover {
+  display: block;
+  opacity: 1.0;
+}
+
+span.msgoptions:hover + ul.msgmenu {
+  display: block;
+}
+
+ul.msgmenu {
+  display: none;
+  padding:0;
+  position: absolute;
+  z-index: 1005;
+  right: 15px;
+  border: 1px solid #00334d;
+  border-radius: 4px;
+  background-color: white;
+  transform: translate(0px, -2px);
+  font-weight: normal;
+}
+
+ul.msgmenu:hover {
+  display: block;
+}
+
+ul.msgmenu li {
+  cursor: pointer;
+  list-style-type: none;
+  margin: 0;
+  padding: 3px 15px;
+}
+
+ul.msgmenu li.red {
+  color: red;
+}
+
+ul.msgmenu li:hover {
+  background-color: #e6e6e6;
+};
+
 /* END MESSAGE */
 
 /* START MODAL */
@@ -365,10 +438,6 @@ div#mymodal{
   top: 20px; 
   font-size: 30px; 
   color: gray;
-}
-
-div#editTeamModal{
-z-index: 1000000;
 }
 
 .button-comm {
