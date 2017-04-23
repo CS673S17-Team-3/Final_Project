@@ -85,8 +85,14 @@ global_namespace.on('connection', function(socket){
                 rooms.delete(room);
                 global_namespace.emit('deleteroom', room);
         });
+
         socket.on('userroom', function(userroom){
                 userroom.save(userroom);
+        socket.on('editmsg', function(msg) {
+            messages.update(msg);
+        });
+        socket.on('deletemsg', function(msgid) {
+            messages.delete(msgid);
         });
 });
 
@@ -106,15 +112,14 @@ function add_new_namespace(room) {
   namespaces[room.id] = io.of(util.format('/%s', room.id))
     .on('connection', function(socket) {
         console.log(util.format('conncted to room %s', room.id ));
-       socket.on('msg',function(msg){
-           console.log(util.format('message from %s: %s', msg.username, msg.value));
-         namespaces[room.id].emit('msg', msg);
-         messages.save(room.id, util.format('%s: %s', msg.username, msg.value), msg.user_id);
-       });
-       socket.on('disconnect',function(){
-         console.log(util.format('someone disconnected from %s', room.id ));
-       });
-  });
+        socket.on('msg',function(msg){
+            console.log(util.format('message from %s: %s', msg.username, msg.value));
+            messages.save(room.id, util.format('%s: %s', msg.username, msg.value), msg.user_id);
+        });
+        socket.on('disconnect',function(){
+            console.log(util.format('someone disconnected from %s', room.id ));
+        });
+    });
 }
 
 client.get(room_url,function(data,response){
@@ -135,7 +140,33 @@ var messages = {
                         headers: { 'Content-Type': 'application/json' }
                 };
                 client.post('http://localhost:8000/api/messages/', message_template, function(data,response) {
+                        namespaces[room_id].emit('msg', data);
                         console.log( util.format('(%s) Room %s : "%s"', response.statusCode, room_id, message) );
+                });
+        },
+        'update': function(msg) {
+                message_template = {
+                        data: {
+                                'id': msg.id,
+                                'text': msg.text
+                        },
+                        headers: { 'Content-Type': 'application/json' }
+                };
+                client.put('http://localhost:8000/api/messages/', message_template, function(data,response) {
+                        global_namespace.emit('editmsg', msg);
+                        console.log( util.format('(%s) Message %s editted to: "%s"', response.statusCode, msg.id, msg.text) );
+                });
+        },
+        'delete': function(msgid) {
+                message_template = {
+                        data: {
+                            'id': msgid
+                        },
+                        headers: { 'Content-Type': 'application/json' }
+                };
+                client.delete('http://localhost:8000/api/messages/', message_template, function(data,response) {
+                        global_namespace.emit('deletemsg', msgid);
+                        console.log( util.format('(%s) Message %s deleted', response.statusCode, msgid) );
                 });
         }
 }

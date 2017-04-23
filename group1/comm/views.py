@@ -48,10 +48,20 @@ class MessageFilter(django_filters.FilterSet):
 
 
 class MessageViewSet(viewsets.ModelViewSet):
-	queryset = Message.objects.all().order_by('time')
+	queryset = Message.objects.all().order_by('id')
 	serializer_class = MessageSerializer
 	filter_backends = (filters.DjangoFilterBackend,)
-	filter_class = MessageFilter 
+	filter_class = MessageFilter
+	def put(self, request):
+		id = int(request.data.get("id", "0"))
+		text = request.data.get("text", "0")
+		message = Message.objects.get(pk=id)
+		message.text = text
+		message.save()
+	def delete(self, request):
+		id = int(request.data.get("id", "0"))
+		message = Message.objects.get(pk=id)
+		message.delete()
 
 class MessageDataViewSet(viewsets.ReadOnlyModelViewSet):
 	# This viewset will show all of the messages in the message model 
