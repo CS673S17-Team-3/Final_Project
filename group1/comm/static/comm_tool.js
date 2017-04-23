@@ -24,6 +24,8 @@ function scroll_messages_into_view() {
     }
 }
 
+
+
 function createteam(){
   //Show modal to create team
   $("#deleteButton").remove();
@@ -322,6 +324,8 @@ function switch_room(target_room){
   // reset the badge count for the target room
   $('div#room-list a').filter( function(){ return $(this).attr('id') === target_room } ).children().filter('.badge').text('');
 
+  document.getElementById("bottom").scrollIntoView();
+ $('html, body').animate({ scrollTop: $(document).height() }, 1200);
 }
 
 // get message for specific room
@@ -479,6 +483,8 @@ $(document).ready(function(){
     event.preventDefault();
   });
 
+
+
 });
 
 $(document).ready(function(){
@@ -609,3 +615,5 @@ function deleteMessage(msgid) {
     return false;
   }
 }
+
+
