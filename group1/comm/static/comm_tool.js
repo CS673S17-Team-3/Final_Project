@@ -539,13 +539,13 @@ function deleteTeamFunc() {
 }
 
 function insertUserRoom(userid, roomid) {
-  var userroom_data = {
-    user: userid,
-    room: roomid
-  };
+    var userroom_data = {
+        user: userid,
+        room: roomid
+    };
+    global.emit('userroom', userroom_data);
 }
 
-  global.emit('userroom', userroom_data);
 function showEditMessage(msgid) {
   var prevmsg = $("p#message-" + msgid).text(); //Remember previous message
   var usr = prevmsg.slice(0, prevmsg.indexOf(":")); //Extract username from message
