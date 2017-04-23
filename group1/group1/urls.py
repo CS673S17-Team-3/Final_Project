@@ -10,11 +10,12 @@ from comm import views
 router = DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'rooms', views.RoomViewSet)
-router.register(r'messages', views.MessageViewSet)
-router.register(r'messagesearch', views.MessageSearchSet)
-router.register(r'messagedata', views.MessageDataViewSet)
-router.register(r'roomuser', views.UserRoomViewSet)
-router.register(r'roomuserdata', views.UserRoomDataViewSet)
+router.register(r'messagedata', views.MessageDataViewSet, 'messagedata')
+router.register(r'messagesearch', views.MessageSearchSet, 'messagesearch')
+router.register(r'messages', views.MessageViewSet, 'message')
+router.register(r'roomuserdata', views.UserRoomDataViewSet, 'roomuserdata')
+router.register(r'roomuser', views.UserRoomViewSet, 'roomuser')
+
 
 
 urlpatterns = patterns('',
