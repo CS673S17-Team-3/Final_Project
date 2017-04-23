@@ -250,7 +250,7 @@ function display() {
     'username': user,
     'value': $('input#text').val(),
     'user_id': user_id
-  }
+  };
   sockets[visible_namespace()].emit('msg', message);
   $('input#text').val('');
   $("#charLimitMessage").css("display", "none");
@@ -275,7 +275,7 @@ var mobile_nav = {
     $('div.message').addClass('hidden-xs hidden-sm');
     $('div.sidebar').removeClass('hidden-xs hidden-sm');
   }
-}
+};
 
 function switch_room(target_room){
 
@@ -383,15 +383,10 @@ function populate_user_list() {
           $('<a />', {
             'href': '#'
           })
-          //.append( $('<span />', {
-          //  'class': 'glyphicon glyphicon-user padded-icon'
-          //  }))
         .append(user.username)
-        })
+        });
 
         $('ul.user_list').append(user_link);
-      //  $('user_list li:before').append(color_aqua);
-
       });
     });
   });
@@ -545,9 +540,10 @@ function deleteTeamFunc() {
 
 function insertUserRoom(userid, roomid) {
   var userroom_data = {
-    user:userid,
-    room:roomid
+    user: userid,
+    room: roomid
   };
+}
 
   global.emit('userroom', userroom_data);
 function showEditMessage(msgid) {
@@ -582,7 +578,7 @@ function editMessage(msgid, msgtext) {
   var message_data = {
     id: msgid,
     text: msgtext
-  }
+  };
   global.emit('editmsg', message_data);
 }
 
