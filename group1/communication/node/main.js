@@ -59,6 +59,7 @@ var client = new Client();
 var users = [];
 
 var global_namespace = io.of('/');
+
 global_namespace.on('connection', function(socket){
         var user;
         socket.on('user', function(msg) { 
@@ -85,6 +86,15 @@ global_namespace.on('connection', function(socket){
                 rooms.delete(room);
                 global_namespace.emit('deleteroom', room);
         });
+        socket.on('userroom', function(userroom) {
+                userroom.save(userroom);
+        });
+        socket.on('editmsg', function(msg) {
+            messages.update(msg);
+        });
+        socket.on('deletemsg', function(msgid) {
+            messages.delete(msgid);
+        });
 });
 
 
@@ -97,7 +107,7 @@ app.get('/users', function(req,res){
 
 var room_url = 'http://localhost:8000/api/rooms/?format=json';
 
-namespaces = {}
+namespaces = {};
 
 function add_new_namespace(room) {
   namespaces[room.id] = io.of(util.format('/%s', room.id))
@@ -182,8 +192,22 @@ var rooms = {
         }
 };
 
+var userroom = {    
+    'save': function(userroom_data) {        
+        userroom_template = {                        
+            data: {           
+                'user': util.format('http://localhost:8000/api/users/%s/', userroom_data.user),
+                'room': util.format('http://localhost:8000/api/rooms/%s/', userroom_data.room)
+            },                        
+            headers: { 'Content-Type': 'application/json' }                
+        };                
+        client.post('http://localhost:8000/api/roomuser/', userroom_template, function(data,response) {                        
+            console.log(util.format('(%s) User %s has joined Room "%s"', response.statusCode, data.user, data.room) );
+        });                
+    }
+};
 
-var msg_endpoint = 'http://127.0.0.1:8000/api/messages/'
+var msg_endpoint = 'http://127.0.0.1:8000/api/messages/';
 
 var message_template = {
         "data": {
