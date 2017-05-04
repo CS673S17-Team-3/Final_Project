@@ -49,3 +49,32 @@ To run the Issue Tracker App Selenium tests:
 ```
 python manage.py test --liveserver=127.0.0.1:8000 selenium_tests.issue_tracker
 ```
+
+### Running Tests With Coverage
+In order to run tests with coverage, you will need to do the following:
+
+Install the coverage python library:
+```
+pip install coverage
+```
+
+Run all of the tests with coverage:
+```
+coverage run --source='.' manage.py test -v 2 --liveserver=127.0.0.1:8000
+```
+
+Run the unit tests with coverage:
+```
+coverage run --source='.' manage.py test -v 2 --liveserver=127.0.0.1:8000 unit_tests
+```
+
+Run the selenium tests with coverage:
+```
+coverage run --source='.' manage.py test -v 2 --liveserver=127.0.0.1:8000 selenium_tests
+```
+
+To generate a coverage report, after the tests have executed:
+```
+coverage report
+```
+
